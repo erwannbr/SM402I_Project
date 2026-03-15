@@ -11,8 +11,8 @@ def display_automata(FA):
     print("-"*len(header))
     for state in sorted (FA['states']):
         prefix = " "
-        if state in FA['initials']: prefix+="E"
-        if state in FA['terminals']: prefix+="S"
+        if state in FA['initials']: prefix+="I"
+        if state in FA['terminals']: prefix+="T"
 
         line = f"{prefix:<5}{state} |"
 

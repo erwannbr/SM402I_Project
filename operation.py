@@ -2,10 +2,13 @@
 # determinize Clem
 # minimize ANAIS
 # standardize houss
+# IMPORTATION
+from automaton import *
 
-def build_mcda (FA, partition):
+
+def build_mcda (finite_automata, partition):
     mcda = {
-        'alphabet' : FA['alphabet'],
+        'alphabet' : finite_automata['alphabet'],
         'states':[],
         'initials':[],
         'terminals':[],
@@ -14,13 +17,13 @@ def build_mcda (FA, partition):
     for i in range(len(partition)):
         mcda['states'].append(i)
     for group_num, group_content in enumerate(partition):
-        if FA['initials'][0] in group_content:
+        if finite_automata['initials'][0] in group_content:
             mcda['initials'] = [group_num]
             break
 
     for group_num, group_content in enumerate(partition):
         for state in group_content:
-            if state in FA['terminals']:
+            if state in finite_automata['terminals']:
                 mcda['terminals'].append(group_num)
                 break
 
@@ -28,7 +31,7 @@ def build_mcda (FA, partition):
         mcda['transitions'][group_num] = {}
         one_state_from_group = list(group_content)[0]
         for letter in mcda['alphabet']:
-            past_destination = FA['transitions'][one_state_from_group][letter][0]
+            past_destination = finite_automata['transitions'][one_state_from_group][letter][0]
             for target_num, target_content in enumerate(partition):
                 if past_destination in target_content:
                     mcda['transitions'][group_num][letter] = [target_num]
@@ -38,10 +41,10 @@ def build_mcda (FA, partition):
         print(f"New state {num}: correspond to previous state {sorted(list(content))}")
     return mcda
 
-def display_partition (partition,FA):
+def display_partition (partition,finite_automata):
     print("Transitions table:")
     header = "State |"
-    for letter in FA['alphabet']:
+    for letter in finite_automata['alphabet']:
         header = header + f"{letter} |"
     print(header)
     print("-"*len(header))
@@ -49,8 +52,8 @@ def display_partition (partition,FA):
     for group_num, group_content in enumerate(partition):
         for state in sorted(list(group_content)):
             line = f"{state} |"
-            for letter in FA['alphabet']:
-                destination = FA['transistions'][state][letter][0]
+            for letter in finite_automata['alphabet']:
+                destination = finite_automata['transistions'][state][letter][0]
                 for target_num, target_content in enumerate(partition):
                     if destination in target_num:
                         line+= f"Group {target_num} |"
@@ -61,10 +64,10 @@ def display_partition (partition,FA):
     for group_num, group_content in enumerate(partition):
         print(f"Group {group_num} : {sorted(list(group_content))}")
 
-def minimization(FA):
-    if is_deterministic(FA) and is_complete(FA):
-        terminal_states = set(FA['terminal'])
-        non_terminal_states = set(FA['non_terminal'])
+def minimization(finite_automata):
+    if is_deterministic(finite_automata) and is_complete(finite_automata):
+        terminal_states = set(finite_automata['terminal'])
+        non_terminal_states = set(finite_automata['non_terminal'])
 
         teta_n=[]
         if non_terminal_states: teta_n.append(non_terminal_states)
@@ -76,8 +79,8 @@ def minimization(FA):
                 patterns={}
                 for state in group:
                     target_partition = []
-                    for letter in FA['alphabet']:
-                        target = FA["transitions"][state][letter][0]
+                    for letter in finite_automata['alphabet']:
+                        target = finite_automata["transitions"][state][letter][0]
                         for group_num, group_content in enumerate(teta_n):
                             if target in group_content:
                                 target_partition.append(group_num)
@@ -92,32 +95,32 @@ def minimization(FA):
             if len(teta_n_plus_1) == len(teta_n):
                 break
             teta_n = teta_n_plus_1
-    return build_mcda (teta_n, FA)
+    return build_mcda (teta_n, finite_automata)
 
-def complement(FA):
-    if is_deterministic(FA) and is_complete(FA):
+def complement(finite_automata):
+    if is_deterministic(finite_automata) and is_complete(finite_automata):
         print("Building complement...")
-        FAComp = FA.copy()
+        finite_automataComp = finite_automata.copy()
         new_terminal_states = []
         new_non_terminal_states = []
-        for state in FA['state']:
-            if state not in FA['terminal']:
+        for state in finite_automata['state']:
+            if state not in finite_automata['terminal']:
                 new_terminal_states.append(state)
             else:
                 new_non_terminal_states.append(state)
-        FAComp['terminal'] = new_terminal_states
-        FAComp['non_terminal'] = new_non_terminal_states
-        display_automata (FAComp)
+        finite_automataComp['terminal'] = new_terminal_states
+        finite_automataComp['non_terminal'] = new_non_terminal_states
+        display_automata (finite_automataComp)
 
         word = input ("Enter a word to test or 'end' to stop:")
         while word!="end":
-            if recognize_word(word, FAComp):
+            if recognize_word(word, finite_automataComp):
                 print (f"The word '{word}' is accepted by the complement")
             else:
                 print(f"The word '{word}' is not accepted by the complement")
             word=input ("Enter a word to test or 'end' to stop:")
 
-        return FAComp
+        return finite_automataComp
 
 
 """
@@ -133,7 +136,7 @@ def completion(automaton):
     transitions = dict(automaton["transitions"]) 
 
     sink_state = "P"
-    missing_transition_found = False
+    missing_transition_found = finite_automatalse
 
     for state in states: 
         for symbol in alphabet: 
