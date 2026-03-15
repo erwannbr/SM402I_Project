@@ -5,22 +5,22 @@
 
 def display_automata(FA):
     header = "     |"
-    for letter in FA['alphabet']:
+    for letter in sorted(FA['alphabet']):
         header += f" {letter}   |"
     print("\n"+header)
     print("-"*len(header))
     for state in sorted (FA['states']):
         prefix = " "
         if state in FA['initials']: prefix+="I"
-        if state in FA['terminals']: prefix+="T"
+        if state in FA['finals']: prefix+="T"
 
         line = f"{prefix:<5}{state} |"
 
-    for letter in FA['alphabet']:
+    for letter in sorted(FA['alphabet']):
         if state in FA['transitions'] and letter in FA['transitions'][state]:
             destination = FA['transitions'][state][letter]
-            dest_str = ",".join(map(str, destination))
-            line+=f"{dest_str:^5} |"
+            dest_str = ",".join(sorted(list(destination)))
+            line+=f"{dest_str:^3} |"
         else:
             line+="     |"
     print(line)

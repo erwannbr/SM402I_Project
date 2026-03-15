@@ -11,7 +11,7 @@ def build_mcda (finite_automata, partition):
         'alphabet' : finite_automata['alphabet'],
         'states':[],
         'initials':[],
-        'terminals':[],
+        'finals':[],
         'transitions':{}
     }
     for i in range(len(partition)):
@@ -66,8 +66,8 @@ def display_partition (partition,finite_automata):
 
 def minimization(finite_automata):
     if is_deterministic(finite_automata) and is_complete(finite_automata):
-        terminal_states = set(finite_automata['terminal'])
-        non_terminal_states = set(finite_automata['non_terminal'])
+        terminal_states = set(finite_automata['finals'])
+        non_terminal_states = set(finite_automata['states']) - terminal_states
 
         teta_n=[]
         if non_terminal_states: teta_n.append(non_terminal_states)
@@ -79,8 +79,8 @@ def minimization(finite_automata):
                 patterns={}
                 for state in group:
                     target_partition = []
-                    for letter in finite_automata['alphabet']:
-                        target = finite_automata["transitions"][state][letter][0]
+                    for letter in sorted(finite_automata['alphabet']):
+                        target = list(finite_automata["transitions"][state][letter])[0]
                         for group_num, group_content in enumerate(teta_n):
                             if target in group_content:
                                 target_partition.append(group_num)
@@ -91,11 +91,11 @@ def minimization(finite_automata):
                     patterns[target_partition].add(state)
                 for new_states in patterns.values():
                     teta_n_plus_1.append(new_states)
-            display_partition(teta_n_plus_1)
+            display_partition(teta_n_plus_1, finite_automata)
             if len(teta_n_plus_1) == len(teta_n):
                 break
             teta_n = teta_n_plus_1
-    return build_mcda (teta_n, finite_automata)
+    return build_mcda (finite_automata, teta_n)
 
 def complement(finite_automata):
     if is_deterministic(finite_automata) and is_complete(finite_automata):
