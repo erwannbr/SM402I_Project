@@ -202,3 +202,29 @@ def completion(automaton):
 
     return automaton
 
+def standardization(FA):
+
+    if is_standard(FA):
+        print("Automaton already standard.")
+        return FA
+
+    new_FA = FA.copy()
+
+    new_initial = max(FA["states"]) + 1
+
+    new_FA["states"] = FA["states"] + [new_initial]
+    new_FA["initial_states"] = [new_initial]
+
+    new_FA["transitions"] = FA["transitions"].copy()
+
+    # connect new initial state
+    for init in FA["initial_states"]:
+        for symbol in FA["alphabet"]:
+            if (init, symbol) in FA["transitions"]:
+                targets = FA["transitions"][(init, symbol)]
+
+                new_FA["transitions"][(new_initial, symbol)] = targets
+
+    print("Automaton has been standardized.")
+
+    return new_FA
