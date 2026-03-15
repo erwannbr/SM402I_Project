@@ -2,6 +2,7 @@
 # determinize Clem
 
 import automaton
+from automaton import *
 
 
 def determinize(automaton):
@@ -47,11 +48,6 @@ def determinize(automaton):
         "final_states": dfa_final_states,
         "transitions": dfa_transitions
     }
-
-# minimize ANAIS
-# standardize houss
-# IMPORTATION
-from automaton import *
 
 
 def build_mcda (finite_automata, partition):
