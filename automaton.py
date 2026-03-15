@@ -65,3 +65,49 @@ def read_word():
     word = input("Enter a word (or 'end' to stop): ")
     
     return word
+
+
+def is_standard(FA):
+
+    if len(FA["initial_states"]) != 1:
+        print("Automaton is not standard.")
+        return False
+
+    initial = FA["initial_states"][0]
+
+    for (state, symbol), targets in FA["transitions"].items():
+        if initial in targets:
+            print("Automaton is not stadard")
+            return False
+
+    print("Automaton is standard.")
+    return True
+
+def is_complete(FA):
+    alphabet = FA["alphabet"]
+    states = FA["states"]
+
+    for state in states:
+        for symbol in alphabet:
+            if (state, symbol) not in FA["transitions"]:
+                print(f"Automaton is not complete")
+                return False
+
+    print("Automaton is complete.")
+    return True
+
+def is_deterministic(FA):
+
+    if len(FA["initial_states"]) != 1:
+        print("The automaton is not deterministic because there are many initial states.")
+        return False
+
+    for key in FA["transitions"]:
+        targets = FA["transitions"][key]
+
+        if len(targets) > 1:
+            print(f"Automaton is not deterministic")
+            return False
+
+    print("Automaton is deterministic.")
+    return True
