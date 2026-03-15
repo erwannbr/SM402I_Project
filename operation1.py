@@ -1,35 +1,7 @@
 # Functions:
 # determinize Clem
 # minimize ANAIS
-# complement anais
 # standardize houss
-# completion amel
-# This is a sample Python script.
-
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-def display_automata(FA):
-    header = "     |"
-    for letter in FA['alphabet']:
-        header += f" {letter}   |"
-    print("\n"+header)
-    print("-"*len(header))
-    for state in sorted (FA['states']):
-        prefix = " "
-        if state in FA['initials']: prefix+="E"
-        if state in FA['terminals']: prefix+="S"
-
-        line = f"{prefix:<5}{state} |"
-
-    for letter in FA['alphabet']:
-        if state in FA['transitions'] and letter in FA['transitions'][state]:
-            destination = FA['transitions'][state][letter]
-            dest_str = ",".join(map(str, destination))
-            line+=f"{dest_str:^5} |"
-        else:
-            line+="     |"
-    print(line)
 
 def build_mcda (FA, partition):
     mcda = {
@@ -147,6 +119,7 @@ def complement(FA):
 
         return FAComp
 
+
 """
 Complete a deterministic automaton by adding a sink state "P" when some transitions are missing.
 An automaton is complete if for every state and every symbol in the alphabet, there is a transition.
@@ -155,26 +128,26 @@ If a transition is missing, it is redirected to the sink state "P". The sink sta
 
 def completion(automaton):
 
-    states = set(automaton["states"])  # get state from automaton / use set() to make a copy so we don't modify
-    alphabet = automaton["alphabet"] # get alphabet
-    transitions = dict(automaton["transitions"]) # get transitions and copy them
+    states = set(automaton["states"])  
+    alphabet = automaton["alphabet"]
+    transitions = dict(automaton["transitions"]) 
 
     sink_state = "P"
     missing_transition_found = False
 
-    for state in states:  # loop through every state
-        for symbol in alphabet: # each state check every symbol of the alphabet
-            if (state, symbol) not in transitions: # if transition does not exist
-                transitions[(state, symbol)] = {sink_state} # add a transition to the sink state p
+    for state in states: 
+        for symbol in alphabet: 
+            if (state, symbol) not in transitions: 
+                transitions[(state, symbol)] = {sink_state} 
                 missing_transition_found = True
 
     if missing_transition_found:
-        automaton["states"].add(sink_state) # add sink state p to the set of states
+        automaton["states"].add(sink_state) 
 
         for symbol in alphabet:
-            transitions[(sink_state, symbol)] = {sink_state} # add self-loops in sink state for every symbol
+            transitions[(sink_state, symbol)] = {sink_state}
 
-    automaton["transitions"] = transitions  # update transitions in automaton
+    automaton["transitions"] = transitions
 
     return automaton
 

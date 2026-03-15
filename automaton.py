@@ -1,12 +1,29 @@
-# Utility functions:
-# display_automaton Erwann
-# recognize_word Amel
-#
 # Predicate functions:
 # is_deterministic HOUSS
 # is_complete HOUSS
 # is_standard HOUSS
 
+def display_automata(FA):
+    header = "     |"
+    for letter in FA['alphabet']:
+        header += f" {letter}   |"
+    print("\n"+header)
+    print("-"*len(header))
+    for state in sorted (FA['states']):
+        prefix = " "
+        if state in FA['initials']: prefix+="E"
+        if state in FA['terminals']: prefix+="S"
+
+        line = f"{prefix:<5}{state} |"
+
+    for letter in FA['alphabet']:
+        if state in FA['transitions'] and letter in FA['transitions'][state]:
+            destination = FA['transitions'][state][letter]
+            dest_str = ",".join(map(str, destination))
+            line+=f"{dest_str:^5} |"
+        else:
+            line+="     |"
+    print(line)
 
 """
 Check if a word is recognized by the automaton.
@@ -16,21 +33,20 @@ At the end, if at least one current state is a final state, the word is accepted
 
 def recognize_word(automaton, word):
 
-    current_states = set(automaton["initial_states"])# start from the initial state(s)
+    current_states = set(automaton["initial_states"])
 
-    for symbol in word: # read the word symbol by symbol
+    for symbol in word: 
 
-        next_states = set()# this will store the states reached after reading the symbol
+        next_states = set()
 
-        for state in current_states: # check all current states
+        for state in current_states: 
 
-            if (state, symbol) in automaton["transitions"]: # if transition exists for this state and symbol
+            if (state, symbol) in automaton["transitions"]: 
 
-                next_states.update(automaton["transitions"][(state, symbol)]) # add the states to next_states
+                next_states.update(automaton["transitions"][(state, symbol)])
 
-        current_states = next_states # move to next states
-
-    for state in current_states: # after reading the word, check if current state is final
+        current_states = next_states
+    for state in current_states: 
         if state in automaton["final_states"]:
             return True
 
