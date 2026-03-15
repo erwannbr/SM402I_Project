@@ -4,7 +4,9 @@ from operation import *
 
 def main():
     automaton = read_automaton()
-    automaton = determinize(automaton)
+    #automaton = determinize(automaton)
+    #automaton = completion(automaton)
+    #automaton = standardization(automaton)
 
     display_automata(automaton)
 

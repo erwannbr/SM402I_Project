@@ -4,29 +4,34 @@
 # is_standard HOUSS
 
 def display_automata(FA):
-    header = "       |"
-    for letter in sorted(FA['alphabet']):
-        header += f" {letter}   |"
+    alphabet = sorted(list(FA['alphabet']))
+    header = "      |"
+    for letter in alphabet:
+        header += f" {letter:^5}|"
     print("\n" + header)
     print("-" * len(header))
 
-    for state in sorted(FA['states']):
-        prefix = " "
-        if state in FA['initials']:
+    for state in sorted(list(FA['states'])):
+        prefix = ""
+        if state in FA.get('initials', []):
             prefix += "I"
-        if state in FA['finals']:
+        if state in FA.get('finals', []):
             prefix += "T"
+        
+        state_label = str(state)
+        line = f"{prefix:>3} {state_label:<2} |"
 
-        line = f"{prefix:<5}{state} |"
-
-        for letter in sorted(FA['alphabet']):
-            destinations = []
-            for trans in FA['transitions']:
-                if trans[0] == state and trans[1] == letter:
-                    destinations.append(trans[2])
-
-            if len(destinations) > 1:
-                return False
+        state_transitions = FA['transitions'].get(state, {})
+        
+        for letter in alphabet:
+            destinations = state_transitions.get(letter, set())
+            
+            if destinations:
+                dest_str = ",".join(sorted(list(destinations)))
+                line += f"{dest_str:^6}|"
+            else:
+                line += "      |"
+        print(line)
 
 
 """
