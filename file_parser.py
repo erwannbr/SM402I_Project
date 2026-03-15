@@ -7,7 +7,7 @@ def read_automaton():
         'states': set(),
         'initials': set(),
         'finals': set(),
-        'transitions': []
+        'transitions': {}
     }
     i = 0
     j = 1
@@ -77,4 +77,35 @@ def read_automaton():
     return automaton
 
 
-read_automaton()
+def display_automata(automaton):
+    header = "     |"
+    for letter in sorted(automaton['alphabet']):
+        header += f" {letter}   |"
+    print("\n" + header)
+    print("-" * len(header))
+
+    for state in sorted(automaton['states']):
+        prefix = " "
+        if state in automaton['initials']:
+            prefix += "I"
+        if state in automaton['finals']:
+            prefix += "T"
+
+        line = f"{prefix:<5}{state} |"
+
+        for letter in sorted(automaton['alphabet']):
+            destinations = []
+            for trans in automaton['transitions']:
+                if trans[0] == state and trans[1] == letter:
+                    destinations.append(trans[2])
+            if destinations:
+                dest_str = ",".join(destinations)
+                line += f"{dest_str:^5}|"
+            else:
+                line += "     |"
+        print(line)
+
+
+if __name__ == "__main__":
+    automaton = read_automaton()
+    display_automata(automaton)

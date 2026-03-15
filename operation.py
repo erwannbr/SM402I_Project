@@ -1,15 +1,13 @@
 # Functions:
 # determinize Clem
-
-import automaton
 from automaton import *
 
 
 def determinize(automaton):
     alphabet = automaton["alphabet"]
-    final_states = automaton["final_states"]
+    final_states = automaton["finals"]
     transitions = automaton["transitions"]
-    initial_state = automaton["initial_states"]
+    initial_state = automaton["initials"]
 
     dfa_states = [initial_state]
     dfa_final_states = []
@@ -44,8 +42,8 @@ def determinize(automaton):
     return {
         "alphabet": alphabet,
         "states": dfa_states,
-        "initial_states": initial_state,
-        "final_states": dfa_final_states,
+        "initials": initial_state,
+        "finals": dfa_final_states,
         "transitions": dfa_transitions
     }
 
