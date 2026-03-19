@@ -1,9 +1,51 @@
 # Functions:
 # determinize Clem
-# minimize ANAIS
-# standardize houss
-# IMPORTATION
 from automaton import *
+
+
+def determinize(automaton):
+    alphabet = automaton["alphabet"]
+    final_states = automaton["finals"]
+    transitions = automaton["transitions"]
+    initial_state = automaton["initials"]
+
+    dfa_states = [initial_state]
+    dfa_final_states = []
+    dfa_transitions = {}
+
+    to_process = [initial_state]
+
+    while to_process:
+        current_state = to_process.pop(0)
+
+        current_key = tuple(sorted(current_state)) 
+        dfa_transitions[current_key] = {}
+
+        for state in current_state:
+            if state in final_states:
+                if current_state not in dfa_final_states:
+                    dfa_final_states.append(current_state)
+                break
+
+        for symbol in alphabet:
+            next_state = set()
+
+            for state in current_state:
+                next_state.update(transitions[state][symbol])
+
+            dfa_transitions[current_key][symbol] = next_state
+
+            if next_state not in dfa_states:
+                dfa_states.append(next_state)
+                to_process.append(next_state)
+
+    return {
+        "alphabet": alphabet,
+        "states": dfa_states,
+        "initials": initial_state,
+        "finals": dfa_final_states,
+        "transitions": dfa_transitions
+    }
 
 
 def build_mcda (finite_automata, partition):
@@ -154,3 +196,29 @@ def completion(automaton):
 
     return automaton
 
+def standardization(FA):
+
+    if is_standard(FA):
+        print("Automaton already standard.")
+        return FA
+
+    new_FA = FA.copy()
+
+    new_initial = max(FA["states"]) + 1
+
+    new_FA["states"] = FA["states"] + [new_initial]
+    new_FA["initial_states"] = [new_initial]
+
+    new_FA["transitions"] = FA["transitions"].copy()
+
+    # connect new initial state
+    for init in FA["initial_states"]:
+        for symbol in FA["alphabet"]:
+            if (init, symbol) in FA["transitions"]:
+                targets = FA["transitions"][(init, symbol)]
+
+                new_FA["transitions"][(new_initial, symbol)] = targets
+
+    print("Automaton has been standardized.")
+
+    return new_FA
