@@ -1,4 +1,5 @@
 from automaton import *
+import copy
 
 """
 Converts a non-deterministic FA into a complete deterministic FA using the subset-construction algorithm.
@@ -79,22 +80,7 @@ Complete a deterministic automaton by adding a sink state "P" when some transiti
 An automaton is complete if for every state and every symbol in the alphabet, there is a transition.
 If a transition is missing, it is redirected to the sink state "P". The sink state then loops to itself for every symbol.
 """
-
 def completion(automaton):
-    """
-    Adds a sink state 'P' for every missing transition so that the automaton
-    becomes complete.
-
-    BUG FIXES vs original:
-    - Original code used `(state, symbol)` tuple keys for transitions but the
-      rest of the program uses nested dicts `transitions[state][symbol]`.
-      Rewritten to use the nested-dict structure.
-    - `missing_transition_found` was initialised to `automaton` (truthy) so
-      the sink state was always added; fixed to a proper boolean flag.
-    - `automaton["states"]` is a set; `.add()` is correct, but the original
-      code tried to use it as a list.  Kept as set.
-    """
-    import copy
     automaton = copy.deepcopy(automaton)
 
     states = set(automaton["states"])
@@ -125,22 +111,10 @@ def completion(automaton):
     return automaton
 
 
-
+"""
+Standardize a deterministic automaton by adding a new initial state
+"""
 def standardization(FA):
-    """
-    Creates a new unique initial state i0 that copies all transitions of the
-    original initial state(s).  Also marks i0 as final if any original initial
-    state was final.
-
-    BUG FIXES vs original:
-    - Original used `max(FA["states"]) + 1` which fails on string state
-      labels.  Now generates a guaranteed-fresh label "i0" (or "i0_new", …).
-    - Original used `FA["initial_states"]` (wrong key); corrected to
-      `FA["initials"]`.
-    - Deep-copies the automaton before modifying it.
-    """
-    import copy
-
     if is_standard(FA):
         print("Automaton is already standard.")
         return FA
@@ -173,9 +147,10 @@ def standardization(FA):
     return new_FA
 
 
-
+"""
+Pretty-print one step of the minimization partition table.
+"""
 def _display_partition(partition, automaton, step):
-    """Pretty-print one step of the minimization partition table."""
     alphabet = sorted(list(automaton['alphabet']))
     print(f"\n  Partition at step {step}:")
     for i, group in enumerate(partition):
@@ -206,17 +181,11 @@ def _display_partition(partition, automaton, step):
         print("  " + "-" * (len(header) - 2))
 
 
+"""
+Build the minimal DFA dict from the final Moore partition.
+"""
 def _build_minimal_dfa(automaton, final_partition):
-    """
-    Build the minimal DFA dict from the final Moore partition.
 
-    BUG FIXES vs original build_mcda:
-    - Used 'terminals' key instead of 'finals'; unified to 'finals'.
-    - Accessed `finite_automata['initials'][0]` which may be a list element —
-      now guards properly.
-    - Destination lookup used `transitions[state][letter][0]` (list indexing)
-      on a set; fixed to use `next(iter(...))`.
-    """
     alphabet = sorted(automaton['alphabet'])
     n = len(final_partition)
 
@@ -251,33 +220,19 @@ def _build_minimal_dfa(automaton, final_partition):
         print(f"  New state {idx} ← {sorted(str(s) for s in group)}")
 
     return {
-        'alphabet': automaton['alphabet'],
-        'states': set(range(n)),
-        'initials': [initial_group],
-        'finals': final_groups,
-        'transitions': transitions
-    }
+            'alphabet': automaton['alphabet'],
+            'states': set(str(i) for i in range(n)), 
+            'initials': [str(initial_group)],       
+            'finals': set(str(f) for f in final_groups), 
+            'transitions': {str(k): {sym: {str(v) for v in vals} for sym, vals in v_dict.items()} 
+                            for k, v_dict in transitions.items()}
+        }
 
 
-
+"""
+Minimizes a complete deterministic FA using Moore's partition refinement.
+"""
 def minimization(automaton):
-    """
-    Minimizes a complete deterministic FA using Moore's partition refinement.
-
-    BUG FIXES vs original:
-    - Used wrong keys 'terminal' / 'non_terminal'; corrected to 'finals' and
-      computed non-finals from states − finals.
-    - Called `display_partition(teta_n_plus_1)` without passing the automaton
-      argument.
-    - `build_mcda` was called with arguments in wrong order and had key
-      mismatches; replaced with `_build_minimal_dfa`.
-    - The while-loop termination condition compared list lengths but did not
-      actually detect stability correctly when groups only reordered; now
-      compares the frozenset of frozensets.
-    - After the loop `teta_n` was used but might have been updated to
-      `teta_n_plus_1` one iteration too many; fixed by keeping the last
-      stable partition.
-    """
     if not is_deterministic(automaton):
         print("Error: minimization requires a deterministic automaton.")
         return automaton
@@ -339,19 +294,11 @@ def minimization(automaton):
     return _build_minimal_dfa(automaton, teta_n)
 
 
-
+"""
+Builds the complement automaton by swapping final and non-final states.
+Requires a complete deterministic automaton.
+"""
 def complement(automaton):
-    """
-    Builds the complement automaton by swapping final and non-final states.
-    Requires a complete deterministic automaton.
-
-    BUG FIXES vs original:
-    - Used key 'state' instead of 'states'.
-    - Used keys 'terminal' / 'non_terminal' instead of 'finals'.
-    - Deep-copies the automaton before modifying it.
-    """
-    import copy
-
     if not is_deterministic(automaton):
         print("Error: complement requires a deterministic automaton.")
         return automaton

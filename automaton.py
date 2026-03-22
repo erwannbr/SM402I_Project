@@ -14,7 +14,7 @@ def display_automata(FA):
     print("\n" + header)
     print("-" * len(header))
 
-    for state in sorted(list(FA['states'])):
+    for state in sorted(str(s) for s in FA['states']):
         prefix = ""
         if state in FA.get('initials', []):
             prefix += "I"
@@ -30,7 +30,7 @@ def display_automata(FA):
             destinations = state_transitions.get(letter, set())
 
             if destinations:
-                dest_str = ",".join(sorted(list(destinations)))
+                dest_str = ",".join(sorted(str(d) for d in destinations))
                 line += f"{dest_str:^6}|"
             else:
                 line += "      |"
