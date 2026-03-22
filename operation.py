@@ -305,9 +305,12 @@ def complement(automaton):
     if not is_complete(automaton):
         print("Error: complement requires a complete automaton.")
         return automaton
-
+    #The automaton MUST be DETERMINISTIC and COMPLETE.
+    #To ensure every word follows exactly ONE unique path. 
     comp = copy.deepcopy(automaton)
+    #We use deepcopy to create a fully independent object in memory so no modif on the original 
     comp['finals'] = automaton['states'] - automaton['finals']
-
-    print("Complement automaton built (final ↔ non-final states swapped).")
+    #Only final states has to be changed/swapped.
+    #States, transitions and initial state remain the same.
+    print("Complement automaton built (final and non-final states swapped).")
     return comp
