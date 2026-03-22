@@ -1,6 +1,6 @@
-#read_automaton Erwann
-#save ?
-
+"""
+Reads the automata.txt file and returns a dictionary representing the automaton.
+"""
 def read_automaton():
     automaton = {
         'alphabet': set(),
@@ -18,7 +18,6 @@ def read_automaton():
 
     automata_number = input("Which automaton do you want to read? ").zfill(2)
 
-    # Find the block starting with the requested ID
     while i < len(lines):
         line = lines[i].strip()
         if line.startswith(f"#ID:{automata_number}"):
@@ -30,9 +29,6 @@ def read_automaton():
     if not found:
         raise ValueError(f"Automaton #{automata_number} not found in file.")
 
-    # BUG FIX: the original loop used `for _ in range(5)` which stops after 5
-    # lines regardless of how many fields remain; replaced with a content-driven
-    # loop that stops at a blank line or the next #ID marker.
     while i < len(lines):
         line = lines[i].strip()
         if not line or line.startswith("#ID:"):
@@ -46,8 +42,6 @@ def read_automaton():
         elif line.startswith("STATES:"):
             states = line.split(":", 1)[1]
             if states.strip():
-                # BUG FIX: keep states as strings to stay consistent with
-                # transitions (which are also keyed by the raw string from file).
                 automaton['states'] = set(s.strip() for s in states.split(","))
 
         elif line.startswith("INITIALS:"):
@@ -75,8 +69,6 @@ def read_automaton():
 
         i += 1
 
-    # BUG FIX: ensure every state has an entry in transitions (even if empty)
-    # so that callers never get a KeyError when iterating over all states.
     for state in automaton['states']:
         if state not in automaton['transitions']:
             automaton['transitions'][state] = {}

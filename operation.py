@@ -1,24 +1,10 @@
-# Functions:
-# determinize Clem
 from automaton import *
 
-
+"""
+Converts a non-deterministic FA into a complete deterministic FA using the subset-construction algorithm.
+"""
 def determinize(automaton):
-    """
-    Converts a non-deterministic FA into a complete deterministic FA using
-    the subset-construction algorithm.
 
-    BUG FIXES vs original:
-    - 'finals' key was used inconsistently (sometimes 'finals', sometimes
-      'terminals'); unified to 'finals' throughout.
-    - initial_state was a list; we now wrap it in a frozenset* so it can be
-      used as a dict key and compared uniformly with other state-sets.
-    - next_state was built as a plain set which is not hashable; use
-      frozensets for DFA state labels.
-    - Missing transitions now route to an explicit empty frozenset sink so
-      the result is always complete.
-    *frozenset = set immuable -> hashable -> can be used as a dictionary key or an element of set
-    """
     alphabet = automaton["alphabet"]
     final_states = automaton["finals"]
     transitions = automaton["transitions"]

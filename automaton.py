@@ -3,6 +3,9 @@
 # is_complete HOUSS
 # is_standard HOUSS
 
+"""
+Display the automaton as a table.
+"""
 def display_automata(FA):
     alphabet = sorted(list(FA['alphabet']))
     header = "      |"
@@ -40,9 +43,8 @@ The function starts from the initial state/states, reads the word symbol by symb
 At the end, if at least one current state is a final state, the word is accepted. Otherwise, it is rejected.
 """
 
-
 def recognize_word(automaton, word):
-    current_states = set(automaton["initial_states"])
+    current_states = set(automaton["initials"])
 
     for symbol in word:
 
@@ -50,12 +52,12 @@ def recognize_word(automaton, word):
 
         for state in current_states:
 
-            if (state, symbol) in automaton["transitions"]:
-                next_states.update(automaton["transitions"][(state, symbol)])
+            if state in automaton["transitions"] and symbol in automaton["transitions"][state]:
+                next_states.update(automaton["transitions"][state][symbol])
 
         current_states = next_states
     for state in current_states:
-        if state in automaton["final_states"]:
+        if state in automaton["finals"]:
             return True
 
     return False
@@ -66,55 +68,55 @@ Read a word from the user.
 The user types a word in the terminal. The function returns the word.
 Typing "end" stops the program.
 """
-
-
 def read_word():
     word = input("Enter a word (or 'end' to stop): ")
 
     return word
 
 
+
+"""
+Check if the automaton is standard
+"""
 def is_standard(FA):
-    if len(FA["initial_states"]) != 1:
-        print("Automaton is not standard.")
+    if len(FA["initials"]) != 1:
         return False
 
-    initial = FA["initial_states"][0]
+    initial = FA["initials"][0]
 
-    for (state, symbol), targets in FA["transitions"].items():
-        if initial in targets:
-            print("Automaton is not stadard")
-            return False
+    for state, state_transitions in FA["transitions"].items():
+        for symbol, targets in state_transitions.items():
+            if initial in targets:
+                return False
 
-    print("Automaton is standard.")
     return True
 
 
+"""
+Check if the automaton is complete
+"""
 def is_complete(FA):
     alphabet = FA["alphabet"]
     states = FA["states"]
 
     for state in states:
         for symbol in alphabet:
-            if (state, symbol) not in FA["transitions"]:
-                print(f"Automaton is not complete")
+            if state not in FA["transitions"] or symbol not in FA["transitions"][state]:
                 return False
 
-    print("Automaton is complete.")
     return True
 
 
+"""
+Check if the automaton is deterministic
+"""
 def is_deterministic(FA):
-    if len(FA["initial_states"]) != 1:
-        print("The automaton is not deterministic because there are many initial states.")
+    if len(FA["initials"]) != 1:
         return False
 
-    for key in FA["transitions"]:
-        targets = FA["transitions"][key]
+    for state, state_transitions in FA["transitions"].items():
+        for symbol, targets in state_transitions.items():
+            if len(targets) > 1:
+                return False
 
-        if len(targets) > 1:
-            print(f"Automaton is not deterministic")
-            return False
-
-    print("Automaton is deterministic.")
     return True
