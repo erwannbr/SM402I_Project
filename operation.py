@@ -150,12 +150,13 @@ def standardization(FA):
 """
 Pretty-print one step of the minimization partition table.
 """
-def _display_partition(partition, automaton, step):
+def display_partition(partition, automaton, step):
     alphabet = sorted(list(automaton['alphabet']))
     print(f"\n  Partition at step {step}:")
     for i, group in enumerate(partition):
+         # Print each group and its members
         print(f"    Group {i}: {sorted(str(s) for s in group)}")
-
+    # Build the header row: one column per symbol, prefixed with an arrow
     header = f"  {'State':<8}|"
     for letter in alphabet:
         header += f" {'→'+letter:<8}|"
@@ -164,6 +165,7 @@ def _display_partition(partition, automaton, step):
     print("  " + "-" * (len(header) - 2))
 
     for i, group in enumerate(partition):
+        # sort by string so mixed int/string state names display consistently
         for state in sorted(group, key=str):
             line = f"  {str(state):<8}|"
             for letter in alphabet:
@@ -184,33 +186,40 @@ def _display_partition(partition, automaton, step):
 """
 Build the minimal DFA dict from the final Moore partition.
 """
-def _build_minimal_dfa(automaton, final_partition):
+def build_minimal_dfa(automaton, final_partition):
 
     alphabet = sorted(automaton['alphabet'])
     n = len(final_partition)
 
-    # Map each original state → its group index
+    # Maps each old state to the index of the group it ended up in.
+    # Example: if state "0.1" is in group 2, then state_to_group["0.1"] == 2.
     state_to_group = {}
     for idx, group in enumerate(final_partition):
         for s in group:
             state_to_group[s] = idx
-
+    # The new initial state is the group that contains the original initial state.
     initial_original = automaton['initials'][0]
     initial_group = state_to_group[initial_original]
-
+    # A group is final if at least one of its original states was final.
+    # Since the partition separates finals from non-finals, in practice either
+    # all states in a group are final or none are — but `any()` is used defensively.
     final_groups = set()
     for idx, group in enumerate(final_partition):
         if any(s in automaton['finals'] for s in group):
             final_groups.add(idx)
 
+    # Build transitions for the new automaton
+    # All states in a group behave identically (that is what the partition guarantees),
+    # so we only need to look at one representative state per group
     transitions = {}
     for idx, group in enumerate(final_partition):
         transitions[idx] = {}
-        rep = next(iter(group))  # any representative
+        rep = next(iter(group))  # pick any state from the group as representative
         for letter in alphabet:
             dest_set = automaton['transitions'].get(rep, {}).get(letter, set())
             if dest_set:
-                dest = next(iter(dest_set))
+                dest = next(iter(dest_set)) # DFA: exactly one destination
+                # Translate the destination to its new group index
                 transitions[idx][letter] = {state_to_group[dest]}
             # (missing transitions remain absent — automaton should be complete
             #  before minimization, so this should not happen)
@@ -218,12 +227,14 @@ def _build_minimal_dfa(automaton, final_partition):
     print("\n--- MINIMIZATION: state correspondence ---")
     for idx, group in enumerate(final_partition):
         print(f"  New state {idx} ← {sorted(str(s) for s in group)}")
-
+    # Convert all state indices to strings so the returned structure is uniform
+    # with the rest of the program (which uses string state labels throughout).
     return {
             'alphabet': automaton['alphabet'],
             'states': set(str(i) for i in range(n)), 
             'initials': [str(initial_group)],       
             'finals': set(str(f) for f in final_groups), 
+            # Rewrite the transitions dict: int keys/values → string keys/values
             'transitions': {str(k): {sym: {str(v) for v in vals} for sym, vals in v_dict.items()} 
                             for k, v_dict in transitions.items()}
         }
@@ -242,7 +253,9 @@ def minimization(automaton):
 
     terminal_states = set(automaton['finals'])
     non_terminal_states = automaton['states'] - terminal_states
-
+    # Initial partition: finals vs non-finals (already distinguishable by definition).
+    # frozenset is used because groups will be stored in a set for the stability
+    # check below — plain sets are not hashable and can't be put inside a set.
     teta_n = []
     if non_terminal_states:
         teta_n.append(frozenset(non_terminal_states))
@@ -250,8 +263,8 @@ def minimization(automaton):
         teta_n.append(frozenset(terminal_states))
 
     step = 0
-    _display_partition(teta_n, automaton, step)
-
+    display_partition(teta_n, automaton, step)
+    
     while True:
         step += 1
         teta_n_plus_1 = []
@@ -259,29 +272,31 @@ def minimization(automaton):
         for group in teta_n:
             patterns = {}
             for state in group:
-                # Signature: tuple of destination-group indices, one per symbol
+                # Signature: tuple of destination-group indices for each symbol.
+                # States with the same signature stay together; different → split.
                 sig = []
                 for letter in sorted(automaton['alphabet']):
                     dest_set = automaton['transitions'].get(state, {}).get(letter, set())
                     if dest_set:
-                        dest = next(iter(dest_set))
+                        dest = next(iter(dest_set)) # DFA: exactly one destination
                         grp_idx = next(
                             (i for i, g in enumerate(teta_n) if dest in g), -1
                         )
                         sig.append(grp_idx)
                     else:
                         sig.append(-1)
-                sig = tuple(sig)
+                sig = tuple(sig) # tuple so it can be used as a dict key
                 if sig not in patterns:
                     patterns[sig] = set()
                 patterns[sig].add(state)
 
             for new_group in patterns.values():
-                teta_n_plus_1.append(frozenset(new_group))
+                teta_n_plus_1.append(frozenset(new_group)) # frozenset for hashability
 
-        _display_partition(teta_n_plus_1, automaton, step)
+        display_partition(teta_n_plus_1, automaton, step)
 
-        # Stability check: same partition (as a set of frozensets)
+         # Stability check: compare as sets of frozensets to ignore ordering.
+        # If the partition is unchanged, the algorithm has converged.
         if set(teta_n_plus_1) == set(teta_n):
             break
         teta_n = teta_n_plus_1
@@ -290,8 +305,8 @@ def minimization(automaton):
         print("\nThe automaton is already minimal.")
     else:
         print(f"\nMinimization complete: {len(automaton['states'])} → {len(teta_n)} states.")
-
-    return _build_minimal_dfa(automaton, teta_n)
+    # Each group in the final partition becomes one state in the minimal DFA
+    return build_minimal_dfa(automaton, teta_n)
 
 
 """
