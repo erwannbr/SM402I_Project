@@ -134,13 +134,24 @@ Minimization complete: 4 → 3 states.
 
 Choose an option: 6
 
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
 Complement automaton built (final and non-final states swapped).
 
       |   a  |   b  |
 ---------------------
- IT 0  |  2   |  2   |
-  T 1  |  1   |  1   |
-    2  |  1   |  1   |
+ T 0  |   0  |   0  |
+   0.2|   0  |   0  |
+   0.4|   0  |   0  |
+IT 1.3|  0.2 |  0.4 |
+Enter a word to test on the complement (or 'end' to stop):
+  '' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): a
+  'a' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): b
+  'b' is rejected by the complement.
 
 -------------------------------------
 
