@@ -152,5 +152,14 @@ Enter a word to test on the complement (or 'end' to stop): a
 Enter a word to test on the complement (or 'end' to stop): end
 
 ===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): a
+'a' is accepted.
+
+Enter a word (or 'end' to stop): b
+'b' is rejected.
+
+Enter a word (or 'end' to stop): end
+===================================
 Choose an option: 0
 Goodbye.
