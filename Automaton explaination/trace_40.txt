@@ -1,0 +1,207 @@
+
+Which automaton do you want to read? 40
+
+===================================
+===================================
+Choose an option: 1
+
+    |   a  |   b  |
+-------------------
+IT 0|  --  |  1,2 |
+ I 1|  0,2 |   2  |
+ T 2|   0  |  --  |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is not standard, there is more than one initial state.
+  Standard    : no
+Automaton is not deterministic: 2 initial states ['0', '1'].
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 3
+Automaton is not standard, there is more than one initial state.
+Automaton is not standard, there is more than one initial state.
+Automaton standardized: new initial state 'i0' created.
+
+     |   a  |   b  |
+--------------------
+ T 0 |  --  |  1,2 |
+   1 |  0,2 |   2  |
+ T 2 |   0  |  --  |
+IT i0|  0,2 |  1,2 |
+
+===================================
+===================================
+Choose an option: 4
+Automaton is not deterministic — multiple targets found:
+  State '0' on 'b' → ['1', '2']
+  State '1' on 'a' → ['0', '2']
+  State 'i0' on 'b' → ['1', '2']
+  State 'i0' on 'a' → ['0', '2']
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state 'i0' ← original states ['i0']
+  New state '0.2' ← original states ['0', '2']
+  New state '1.2' ← original states ['1', '2']
+  New state '0' ← original states ['0']
+  New state '2' ← original states ['2']
+  New state '∅' ← original states []
+
+      |   a  |   b  |
+---------------------
+ T 0  |   ∅  |  1.2 |
+ T 0.2|   0  |  1.2 |
+ T 1.2|  0.2 |   2  |
+ T 2  |   0  |   ∅  |
+IT i0 |  0.2 |  1.2 |
+   ∅  |   ∅  |   ∅  |
+
+===================================
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['∅']
+    Group 1: ['0', '0.2', '1.2', '2', 'i0']
+  ------------------
+  State| →a  | →b  |
+  ------------------
+  ∅    | G0  | G0  |
+  ------------------
+  0    | G0  | G1  |
+  0.2  | G1  | G1  |
+  1.2  | G1  | G1  |
+  2    | G1  | G0  |
+  i0   | G1  | G1  |
+  ------------------
+
+  Partition at step 1:
+    Group 0: ['∅']
+    Group 1: ['0']
+    Group 2: ['0.2', '1.2', 'i0']
+    Group 3: ['2']
+  ------------------
+  State| →a  | →b  |
+  ------------------
+  ∅    | G0  | G0  |
+  ------------------
+  0    | G0  | G2  |
+  ------------------
+  0.2  | G1  | G2  |
+  1.2  | G2  | G3  |
+  i0   | G2  | G2  |
+  ------------------
+  2    | G1  | G0  |
+  ------------------
+
+  Partition at step 2:
+    Group 0: ['∅']
+    Group 1: ['0']
+    Group 2: ['1.2']
+    Group 3: ['0.2']
+    Group 4: ['i0']
+    Group 5: ['2']
+  ------------------
+  State| →a  | →b  |
+  ------------------
+  ∅    | G0  | G0  |
+  ------------------
+  0    | G0  | G2  |
+  ------------------
+  1.2  | G3  | G5  |
+  ------------------
+  0.2  | G1  | G2  |
+  ------------------
+  i0   | G3  | G2  |
+  ------------------
+  2    | G1  | G0  |
+  ------------------
+
+  Partition at step 3:
+    Group 0: ['∅']
+    Group 1: ['0']
+    Group 2: ['1.2']
+    Group 3: ['0.2']
+    Group 4: ['i0']
+    Group 5: ['2']
+  ------------------
+  State| →a  | →b  |
+  ------------------
+  ∅    | G0  | G0  |
+  ------------------
+  0    | G0  | G2  |
+  ------------------
+  1.2  | G3  | G5  |
+  ------------------
+  0.2  | G1  | G2  |
+  ------------------
+  i0   | G3  | G2  |
+  ------------------
+  2    | G1  | G0  |
+  ------------------
+
+The automaton is already minimal.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['∅']
+  New state 1 ← ['0']
+  New state 2 ← ['1.2']
+  New state 3 ← ['0.2']
+  New state 4 ← ['i0']
+  New state 5 ← ['2']
+
+    |  a |  b |
+---------------
+   0|  0 |  0 |
+ T 1|  0 |  2 |
+ T 2|  3 |  5 |
+ T 3|  1 |  2 |
+IT 4|  3 |  2 |
+ T 5|  1 |  0 |
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a |  b |
+---------------
+ T 0|  0 |  0 |
+   1|  0 |  2 |
+   2|  3 |  5 |
+   3|  1 |  2 |
+ I 4|  3 |  2 |
+   5|  1 |  0 |
+Enter a word to test on the complement (or 'end' to stop): aa
+  'aa' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+    |  a |  b |
+---------------
+ T 0|  0 |  0 |
+   1|  0 |  2 |
+   2|  3 |  5 |
+   3|  1 |  2 |
+ I 4|  3 |  2 |
+   5|  1 |  0 |
+
+Choose an option: 7
+Enter a word (or 'end' to stop): bba
+  'bba' is accepted.
+Enter a word (or 'end' to stop): end
+
+===================================

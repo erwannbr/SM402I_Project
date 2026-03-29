@@ -1,0 +1,165 @@
+
+Which automaton do you want to read? 43
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+    |  a |   b  |
+-----------------
+ I 0|  0 |  0,1 |
+   1|  2 |  --  |
+ T 2|  2 |   2  |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+  Standard    : no
+Automaton is not deterministic — multiple targets found:
+  State '0' on 'b' → ['0', '1']
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 3
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+Automaton standardized: new initial state 'i0' created.
+
+     |  a |   b  |
+------------------
+   0 |  0 |  0,1 |
+   1 |  2 |  --  |
+ T 2 |  2 |   2  |
+ I i0|  0 |  0,1 |
+
+===================================
+===================================
+Choose an option: 4
+Automaton is not deterministic — multiple targets found:
+  State '0' on 'b' → ['0', '1']
+  State 'i0' on 'b' → ['0', '1']
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state 'i0' ← original states ['i0']
+  New state '0' ← original states ['0']
+  New state '0.1' ← original states ['0', '1']
+  New state '0.2' ← original states ['0', '2']
+  New state '0.1.2' ← original states ['0', '1', '2']
+
+        |   a  |    b   |
+-------------------------
+   0    |   0  |   0.1  |
+   0.1  |  0.2 |   0.1  |
+ T 0.1.2|  0.2 |  0.1.2 |
+ T 0.2  |  0.2 |  0.1.2 |
+ I i0   |   0  |   0.1  |
+
+===================================
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['0', '0.1', 'i0']
+    Group 1: ['0.1.2', '0.2']
+  --------------------
+  State  | →a  | →b  |
+  --------------------
+  0      | G0  | G0  |
+  0.1    | G1  | G0  |
+  i0     | G0  | G0  |
+  --------------------
+  0.1.2  | G1  | G1  |
+  0.2    | G1  | G1  |
+  --------------------
+
+  Partition at step 1:
+    Group 0: ['0.1']
+    Group 1: ['0', 'i0']
+    Group 2: ['0.1.2', '0.2']
+  --------------------
+  State  | →a  | →b  |
+  --------------------
+  0.1    | G2  | G0  |
+  --------------------
+  0      | G1  | G0  |
+  i0     | G1  | G0  |
+  --------------------
+  0.1.2  | G2  | G2  |
+  0.2    | G2  | G2  |
+  --------------------
+
+  Partition at step 2:
+    Group 0: ['0.1']
+    Group 1: ['0', 'i0']
+    Group 2: ['0.1.2', '0.2']
+  --------------------
+  State  | →a  | →b  |
+  --------------------
+  0.1    | G2  | G0  |
+  --------------------
+  0      | G1  | G0  |
+  i0     | G1  | G0  |
+  --------------------
+  0.1.2  | G2  | G2  |
+  0.2    | G2  | G2  |
+  --------------------
+
+Minimization complete: 5 → 3 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['0.1']
+  New state 1 ← ['0', 'i0']
+  New state 2 ← ['0.1.2', '0.2']
+
+    |  a |  b |
+---------------
+   0|  2 |  0 |
+ I 1|  1 |  0 |
+ T 2|  2 |  2 |
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a |  b |
+---------------
+ T 0|  2 |  0 |
+IT 1|  1 |  0 |
+   2|  2 |  2 |
+Enter a word to test on the complement (or 'end' to stop): ab
+  'ab' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+    |  a |  b |
+---------------
+ T 0|  2 |  0 |
+IT 1|  1 |  0 |
+   2|  2 |  2 |
+
+

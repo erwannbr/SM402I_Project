@@ -1,0 +1,111 @@
+Which automaton do you want to read? 21
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+    |  a  |  b  |  c  |  d  |
+-----------------------------
+   0|  -- |  -- |  -- |  1  |
+IT 1|  2  |  -- |  -- |  -- |
+   2|  -- |  3  |  -- |  -- |
+   3|  -- |  -- |  0  |  -- |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is not standard because transition from state 0 with symbol 'd' goes to the initial state 1.
+  Standard    : no
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 3
+Automaton is not standard because transition from state 0 with symbol 'd' goes to the initial state 1.
+Automaton is not standard because transition from state 0 with symbol 'd' goes to the initial state 1.
+Automaton standardized: new initial state 'i0' created.
+
+     |  a  |  b  |  c  |  d  |
+------------------------------
+   0 |  -- |  -- |  -- |  1  |
+ T 1 |  2  |  -- |  -- |  -- |
+   2 |  -- |  3  |  -- |  -- |
+   3 |  -- |  -- |  0  |  -- |
+IT i0|  2  |  -- |  -- |  -- |
+
+===================================
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is not complete because state i0 has no transition
+Please obtain a complete deterministic FA first (option 4).
+
+===================================
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is not complete because state i0 has no transition
+Automaton is deterministic but not complete → completing.
+Sink state 'P' added to complete the automaton.
+
+     |  a  |  b  |  c  |  d  |
+------------------------------
+   0 |  -- |  -- |  -- |  1  |
+ T 1 |  2  |  -- |  -- |  -- |
+   2 |  -- |  3  |  -- |  -- |
+   3 |  -- |  -- |  0  |  -- |
+   P |  P  |  P  |  P  |  P  |
+IT i0|  2  |  P  |  P  |  P  |
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+     |  a  |  b  |  c  |  d  |
+------------------------------
+ T 0 |  -- |  -- |  -- |  1  |
+   1 |  2  |  -- |  -- |  -- |
+ T 2 |  -- |  3  |  -- |  -- |
+ T 3 |  -- |  -- |  0  |  -- |
+ T P |  P  |  P  |  P  |  P  |
+ I i0|  2  |  P  |  P  |  P  |
+Enter a word to test on the complement (or 'end' to stop): ab
+  'ab' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+     |  a  |  b  |  c  |  d  |
+------------------------------
+ T 0 |  -- |  -- |  -- |  1  |
+   1 |  2  |  -- |  -- |  -- |
+ T 2 |  -- |  3  |  -- |  -- |
+ T 3 |  -- |  -- |  0  |  -- |
+ T P |  P  |  P  |  P  |  P  |
+ I i0|  2  |  P  |  P  |  P  |
+
+===================================
+===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): aaaa
+  'aaaa' is accepted.
+Enter a word (or 'end' to stop): end
+
+

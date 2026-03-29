@@ -1,0 +1,204 @@
+
+Which automaton do you want to read? 42
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+    |  a |  b |  c  |
+---------------------
+   0|  3 |  1 |  3  |
+IT 1|  0 |  2 |  -- |
+   2|  1 |  4 |  4  |
+   3|  3 |  3 |  3  |
+   4|  4 |  4 |  4  |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is not standard because transition from state 2 with symbol 'a' goes to the initial state 1.
+  Standard    : no
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 3
+Automaton is not standard because transition from state 2 with symbol 'a' goes to the initial state 1.
+Automaton is not standard because transition from state 2 with symbol 'a' goes to the initial state 1.
+Automaton standardized: new initial state 'i0' created.
+
+     |  a |  b |  c  |
+----------------------
+   0 |  3 |  1 |  3  |
+ T 1 |  0 |  2 |  -- |
+   2 |  1 |  4 |  4  |
+   3 |  3 |  3 |  3  |
+   4 |  4 |  4 |  4  |
+IT i0|  0 |  2 |  -- |
+
+===================================
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is not complete because state i0 has no transition
+Automaton is deterministic but not complete → completing.
+Sink state 'P' added to complete the automaton.
+
+     |  a |  b |  c  |
+----------------------
+   0 |  3 |  1 |  3  |
+ T 1 |  0 |  2 |  -- |
+   2 |  1 |  4 |  4  |
+   3 |  3 |  3 |  3  |
+   4 |  4 |  4 |  4  |
+   P |  P |  P |  P  |
+IT i0|  0 |  2 |  P  |
+
+===================================
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['0', '2', '3', '4', 'P']
+    Group 1: ['1', 'i0']
+  ------------------------
+  State| →a  | →b  | →c  |
+  ------------------------
+  0   | G0  | G1  | G0  |
+  2   | G1  | G0  | G0  |
+  3   | G0  | G0  | G0  |
+  4   | G0  | G0  | G0  |
+  P   | G0  | G0  | G0  |
+  ------------------------
+  1   | G0  | G0  | --  |
+  i0  | G0  | G0  | G0  |
+  ------------------------
+
+  Partition at step 1:
+    Group 0: ['0']
+    Group 1: ['2']
+    Group 2: ['3', '4', 'P']
+    Group 3: ['i0']
+    Group 4: ['1']
+  ------------------------
+  State| →a  | →b  | →c  |
+  ------------------------
+  0   | G2  | G4  | G2  |
+  ------------------------
+  2   | G4  | G2  | G2  |
+  ------------------------
+  3   | G2  | G2  | G2  |
+  4   | G2  | G2  | G2  |
+  P   | G2  | G2  | G2  |
+  ------------------------
+  i0  | G0  | G1  | G2  |
+  ------------------------
+  1   | G0  | G1  | --  |
+  ------------------------
+
+  Partition at step 2:
+    Group 0: ['0']
+    Group 1: ['2']
+    Group 2: ['3', '4', 'P']
+    Group 3: ['i0']
+    Group 4: ['1']
+  ------------------------
+  State| →a  | →b  | →c  |
+  ------------------------
+  0   | G2  | G4  | G2  |
+  ------------------------
+  2   | G4  | G2  | G2  |
+  ------------------------
+  3   | G2  | G2  | G2  |
+  4   | G2  | G2  | G2  |
+  P   | G2  | G2  | G2  |
+  ------------------------
+  i0  | G0  | G1  | G2  |
+  ------------------------
+  1   | G0  | G1  | --  |
+  ------------------------
+
+Minimization complete: 7 → 5 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['0']
+  New state 1 ← ['2']
+  New state 2 ← ['3', '4', 'P']
+  New state 3 ← ['i0']
+  New state 4 ← ['1']
+
+    |  a |  b |  c  |
+---------------------
+   0|  2 |  4 |  2  |
+   1|  4 |  2 |  2  |
+   2|  2 |  2 |  2  |
+IT 3|  0 |  1 |  2  |
+ T 4|  0 |  1 |  -- |
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is not complete because state 4 has no transition
+Please obtain a complete deterministic FA first (option 4).
+
+===================================
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is not complete because state 4 has no transition
+Automaton is deterministic but not complete → completing.
+Sink state 'P' added to complete the automaton.
+
+    |  a |  b |  c |
+--------------------
+   0|  2 |  4 |  2 |
+   1|  4 |  2 |  2 |
+   2|  2 |  2 |  2 |
+IT 3|  0 |  1 |  2 |
+ T 4|  0 |  1 |  P |
+   P|  P |  P |  P |
+
+===================================
+===================================
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is rejected.
+
+Enter a word (or 'end' to stop): b
+  'b' is rejected.
+
+Enter a word (or 'end' to stop): ba
+  'ba' is accepted.
+
+Enter a word (or 'end' to stop): aba
+  'aba' is accepted.
+
+Enter a word (or 'end' to stop): bb
+  'bb' is rejected.
+
+Enter a word (or 'end' to stop): bab
+  'bab' is accepted.
+
+Enter a word (or 'end' to stop): end
+===================================

@@ -164,14 +164,14 @@ ALPHABET:a,b,c,d
 STATES:0,1,2,3
 INITIALS:1
 TERMINALS:1
-TRANSITIONS:1,a,0|1,d,0|1,a,3|0,a,1|3,c,0|2,b,3
+TRANSITIONS:1,a,2|0,d,1|2,b,3|3,c,0
 
 #ID:22
 ALPHABET:a,b,c,d
 STATES:0,1,2,3
 INITIALS:1
 TERMINALS:1
-TRANSITIONS:1,a,2|2,b,3|3,c,0|0,d,1
+TRANSITIONS:1,a,2|2,b,3|3,c,0|0,d,1|1,a,0|1,a,3|
 
 #ID:23
 ALPHABET:a,b,c,d
@@ -185,20 +185,20 @@ ALPHABET:a,b,c,d
 STATES:0,1,2,3,4
 INITIALS:1
 TERMINALS:0
-TRANSITIONS:1,a,2|2,b,3|3,c,4|4,d,0|1,b,3|1,c,4|1,d,0|2,c,4|2,d,0|3,d,0
+TRANSITIONS:1,a,2|2,b,3|3,c,4|4,d,0|2,a,2|3,b,3|4,c,4|0,d,0||1,b,3|1,c,4|1,d,0|2,c,4|2,d,0|3,d,0
 
 #ID:25
 ALPHABET:a,b,c,d
 STATES:1,2,3,4,0
 INITIALS:1
 TERMINALS:0
-TRANSITIONS:1,a,2|1,b,3|1,c,4|1,d,0|2,a,1|2,b,2|2,c,3|2,d,4|3,b,2|3,c,3|3,d,4|4,c,3|4,d,4|0,d,4
+TRANSITIONS:1,a,2|1,b,3|1,c,4|1,d,0|1,a,1|2,b,2|2,b,3|2,c,4|2,d,0|3,d,0|3,c,3|3,c,4|4,d,4|4,d,0
 
 #ID:26
 ALPHABET:a,b
 STATES:0,1,2,3
 INITIALS:1
-TERMINALS:3,0
+TERMINALS:3
 TRANSITIONS:1,a,2|1,b,2|2,a,0|2,b,3|3,a,3|3,b,3
 
 #ID:27
@@ -275,43 +275,43 @@ TRANSITIONS:0,a,1|0,b,1|0,b,2|1,b,0|2,a,1|2,a,0|1,b,2
 ALPHABET:a,b
 STATES:0,1,2,3,4
 INITIALS:0
-TERMINALS:1,2,3,4
-TRANSITIONS:0,a,1|1,a,2|2,b,2|0,b,3|3,b,4|4,a,4
+TERMINALS:0,1,2,3,4
+TRANSITIONS:0,a,1|1,a,2|2,b,0|0,b,3|3,b,0|3,a,1|4,a,1|1,b,4
 
 #ID:38
 ALPHABET:a,b
 STATES:0,1,2,3
 INITIALS:0
-TERMINALS:2,3
-TRANSITIONS:0,a,1|1,b,2|2,a,3|2,b,3|3,a,3|3,b,3
+TERMINALS:0,1,2,3
+TRANSITIONS:0,a,1|1,b,2|2,a,3|2,b,3|3,a,3|3,b,3|1,a,1|0,b,3
 
 #ID:39
 ALPHABET:a,b
 STATES:0,1,2,3
-INITIALS:0,3
+INITIALS:0,1,3
 TERMINALS:1
-TRANSITIONS:0,a,1|1,b,1|3,a,2|2,b,1|2,a,3
+TRANSITIONS:0,a,1|1,a,1|3,a,2|2,b,1|3,a,1|1,b,2|2,a,0|0,b,2|
 
 #ID:40
 ALPHABET:a,b
 STATES:0,1,2
 INITIALS:0,1
 TERMINALS:0,2
-TRANSITIONS:0,b,1|1,a,0|1,a,2|1,b,2|2,a,0
+TRANSITIONS:0,b,1|1,a,0|1,a,2|1,b,2|2,a,0|0,b,2|
 
 #ID:41
 ALPHABET:a,b
 STATES:0,1,2,3,4,5
 INITIALS:0
 TERMINALS:1,2,3,4
-TRANSITIONS:0,a,1|1,a,2|2,a,2|2,b,3|0,b,4|4,a,5|4,b,5|3,a,5|3,b,5|5,a,5|5,b,5
+TRANSITIONS:0,a,1|1,a,2|2,a,2|2,b,3|0,b,4||1,b,3|4,a,5|4,b,5|3,a,5|3,b,5|5,a,5|5,b,5
 
 #ID:42
 ALPHABET:a,b,c
 STATES:0,1,2,3,4
 INITIALS:1
 TERMINALS:1
-TRANSITIONS:1,b,2|2,a,1|1,b,0|0,a,1|0,a,3|0,c,3|3,a,3|3,b,3|3,c,3|2,b,4|2,c,4|4,a,4|4,b,4|4,c,4
+TRANSITIONS:1,b,2|2,a,1|1,a,0|0,b,1|0,a,3|0,c,3|3,a,3|3,b,3|3,c,3|2,b,4|2,c,4|4,a,4|4,b,4|4,c,4
 
 #ID:43
 ALPHABET:a,b
@@ -322,7 +322,7 @@ TRANSITIONS:0,a,0|0,b,0|0,b,1|1,a,2|2,a,2|2,b,2
 
 #ID:44
 ALPHABET:a,b
-STATES:0,1,2,3,P
+STATES:0,1,2,3
 INITIALS:0
 TERMINALS:2,3
-TRANSITIONS:0,a,1|0,a,2|0,b,2|1,b,3|3,a,3|3,b,3|3,a,2|3,b,2|2,b,2|2,a,P|2,b,P|P,a,P|P,b,P
+TRANSITIONS:0,a,1|0,a,2|0,b,2|1,b,3|3,a,3|3,b,3|3,a,2|3,b,2|2,b,2|2,a,3

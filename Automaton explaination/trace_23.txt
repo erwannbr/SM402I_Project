@@ -1,0 +1,193 @@
+
+Which automaton do you want to read? 23
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  T 0  |      |      |      |  0   |
+  I 1  |  2   |      |      |      |
+    2  |  2   |  3   |      |      |
+    3  |      |  3   |  4   |      |
+    4  |      |      |  4   |  0   |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is standrad.
+  Standard    : yes
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 3
+Automaton is standrad.
+Automaton is already standard — skipping.
+
+===================================
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is complete
+Automaton is already a complete DFA — nothing to do.
+
+===================================
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['1', '2', '3', '4']
+    Group 1: ['0']
+  -------------------------------------------------
+  State   | →a      | →b      | →c      | →d      |
+  -------------------------------------------------
+  1       | G0      | --      | --      | --      |
+  2       | G0      | G0      | --      | --      |
+  3       | --      | G0      | G0      | --      |
+  4       | --      | --      | G0      | G1      |
+  -------------------------------------------------
+  0       | --      | --      | --      | G1      |
+  -------------------------------------------------
+
+  Partition at step 1:
+    Group 0: ['3']
+    Group 1: ['4']
+    Group 2: ['2']
+    Group 3: ['1']
+    Group 4: ['0']
+  -------------------------------------------------
+  State   | →a      | →b      | →c      | →d      |
+  -------------------------------------------------
+  3       | --      | G0      | G1      | --      |
+  -------------------------------------------------
+  4       | --      | --      | G1      | G4      |
+  -------------------------------------------------
+  2       | G2      | G0      | --      | --      |
+  -------------------------------------------------
+  1       | G2      | --      | --      | --      |
+  -------------------------------------------------
+  0       | --      | --      | --      | G4      |
+  -------------------------------------------------
+
+  Partition at step 2:
+    Group 0: ['3']
+    Group 1: ['4']
+    Group 2: ['2']
+    Group 3: ['1']
+    Group 4: ['0']
+  -------------------------------------------------
+  State   | →a      | →b      | →c      | →d      |
+  -------------------------------------------------
+  3       | --      | G0      | G1      | --      |
+  -------------------------------------------------
+  4       | --      | --      | G1      | G4      |
+  -------------------------------------------------
+  2       | G2      | G0      | --      | --      |
+  -------------------------------------------------
+  1       | G2      | --      | --      | --      |
+  -------------------------------------------------
+  0       | --      | --      | --      | G4      |
+  -------------------------------------------------
+
+The automaton is already minimal.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['3']
+  New state 1 ← ['4']
+  New state 2 ← ['2']
+  New state 3 ← ['1']
+  New state 4 ← ['0']
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+    0  |      |  0   |  1   |      |
+    1  |      |      |  1   |  4   |
+    2  |  2   |  0   |      |      |
+  I 3  |  2   |      |      |      |
+  T 4  |      |      |      |  4   |
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is not complete because state 2 has no transition
+Please obtain a complete deterministic FA first (option 4).
+
+===================================
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is not complete because state 2 has no transition
+Automaton is deterministic but not complete → completing.
+Sink state 'P' added to complete the automaton.
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+    0  |  P   |  0   |  1   |  P   |
+    1  |  P   |  P   |  1   |  4   |
+    2  |  2   |  0   |  P   |  P   |
+  I 3  |  2   |  P   |  P   |  P   |
+  T 4  |  P   |  P   |  P   |  4   |
+    P  |  P   |  P   |  P   |  P   |
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  T 0  |  P   |  0   |  1   |  P   |
+  T 1  |  P   |  P   |  1   |  4   |
+  T 2  |  2   |  0   |  P   |  P   |
+ IT 3  |  2   |  P   |  P   |  P   |
+    4  |  P   |  P   |  P   |  4   |
+  T P  |  P   |  P   |  P   |  P   |
+Enter a word to test on the complement (or 'end' to stop): AA
+  'AA' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): aaaa
+  'aaaa' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  T 0  |  P   |  0   |  1   |  P   |
+  T 1  |  P   |  P   |  1   |  4   |
+  T 2  |  2   |  0   |  P   |  P   |
+ IT 3  |  2   |  P   |  P   |  P   |
+    4  |  P   |  P   |  P   |  4   |
+  T P  |  P   |  P   |  P   |  P   |
+
+===================================
+===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): aaaa
+  'aaaa' is accepted.
+Enter a word (or 'end' to stop): end
+
+

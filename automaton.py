@@ -114,17 +114,24 @@ def read_word():
 Check if the automaton is standard
 """
 def is_standard(FA):
+    # Check that there is exactly one initial state
     if len(FA["initials"]) != 1:
         print("Automaton is not standard, there is more than one initial state.")
         return False
 
+    # Get the single initial state
     initial = FA["initials"][0]
 
+    # Loop through all states and their transitions
     for state, state_transitions in FA["transitions"].items():
+        # Loop through each symbol and its target states
         for symbol, targets in state_transitions.items():
+            # Check if any transition leads back to the initial state
             if initial in targets:
                 print(f"Automaton is not standard because transition from state {state} with symbol '{symbol}' goes to the initial state {initial}.")
                 return False
+
+    # If all checks pass, the automaton is standard
     print("Automaton is standrad.")
     return True
 
@@ -133,22 +140,26 @@ def is_standard(FA):
 Check if the automaton is complete
 """
 def is_complete(FA):
+    # Get alphabet and states of the automaton
     alphabet = FA["alphabet"]
     states = FA["states"]
 
+    # Loop through each state
     for state in states:
+        # For each symbol in the alphabet
         for symbol in alphabet:
+            # Check if the state has any transitions defined
             if state not in FA["transitions"] or symbol not in FA["transitions"][state]:
                 print(f"Automaton is not complete because state {state} has no transition")
                 return False
+            # Redundant check (already covered above) for missing symbol transition
             if symbol not in FA["transitions"][state]:
                 print(f"Automaton is not complete, we have missing transition from state {state} with symbol '{symbol}'")
                 return False
 
+    # If all transitions exist, the automaton is complete
     print("Automaton is complete")
     return True
-
-
 """
 Check if the automaton is deterministic
 """

@@ -1,0 +1,70 @@
+ 
+Which automaton do you want to read? 26
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+    |  a  |  b  |
+-----------------
+ T 0|  -- |  -- |
+ I 1|  2  |  2  |
+   2|  0  |  3  |
+ T 3|  3  |  3  |
+
+===================================
+===================================
+Choose an option: 2
+Automaton is standrad.
+  Standard    : yes
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+===================================
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a  |  b  |
+-----------------
+   0|  -- |  -- |
+IT 1|  2  |  2  |
+ T 2|  0  |  3  |
+   3|  3  |  3  |
+Enter a word to test on the complement (or 'end' to stop): a
+  'a' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+    |  a  |  b  |
+-----------------
+   0|  -- |  -- |
+IT 1|  2  |  2  |
+ T 2|  0  |  3  |
+   3|  3  |  3  |
+
+===================================
+===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): abaaa
+  'abaaa' is accepted.
+Enter a word (or 'end' to stop): end
+
+===================================
