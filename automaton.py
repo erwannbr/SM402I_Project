@@ -36,6 +36,9 @@ def display_automata(FA):
                 line += "      |"
         print(line)
 
+# ============================
+# WORD RECOGNITION
+# ============================
 
 """
 Check if a word is recognized by the automaton.
@@ -44,35 +47,49 @@ At the end, if at least one current state is a final state, the word is accepted
 """
 
 def recognize_word(automaton, word):
+    
+    # start from the initial state 
     current_states = set(automaton["initials"])
-
+    
+    # read the word one symbol at a time
     for symbol in word:
 
+        # this will store the states we can reach after reading the symbol
         next_states = set()
 
+        # check all current states
         for state in current_states:
-
+            # make sure the state has transitions and the symbol exists
             if state in automaton["transitions"] and symbol in automaton["transitions"][state]:
+                # add all reachable states
                 next_states.update(automaton["transitions"][state][symbol])
-
+        
+        # move to the next states
         current_states = next_states
+
+    # after reading the whole word, check if we reached a final state
     for state in current_states:
         if state in automaton["finals"]:
             return True
-
+    
+    # if no final state is reached → word is rejected
     return False
 
+# ============================
+# READ WORD FROM USER
+# ============================
 
 """
 Read a word from the user.
 The user types a word in the terminal. The function returns the word.
 Typing "end" stops the program.
 """
+
 def read_word():
+    # ask the user to type a word in the terminal
     word = input("Enter a word (or 'end' to stop): ")
-
+    # return the word as a string
     return word
-
 
 
 """

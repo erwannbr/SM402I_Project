@@ -74,6 +74,9 @@ def determinize(automaton):
         "transitions": str_transitions
     }
 
+# ============================
+# COMPLETION FUNCTION
+# ============================
 
 """
 Complete a deterministic automaton by adding a sink state "P" when some transitions are missing.
@@ -81,33 +84,49 @@ An automaton is complete if for every state and every symbol in the alphabet, th
 If a transition is missing, it is redirected to the sink state "P". The sink state then loops to itself for every symbol.
 """
 def completion(automaton):
-    automaton = copy.deepcopy(automaton)
 
-    states = set(automaton["states"])
-    alphabet = automaton["alphabet"]
-    transitions = automaton["transitions"]
+    automaton = copy.deepcopy(automaton) # make a deep copy so we don't modify the original automaton
+    # get the main components of the automaton
+    states = set(automaton["states"]) # copy of states
+    alphabet = automaton["alphabet"] # symbols
+    transitions = automaton["transitions"] # transitions 
 
-    sink_state = "P"
-    missing_transition_found = False
-
+    sink_state = "P" # name of the sink state (like in class)
+    missing_transition_found = False  # used to know if we actually need to add P
+    
+    # go through every state
     for state in states:
+
+        # if a state has no transitions at all, create an empty dict for it
         if state not in transitions:
             transitions[state] = {}
+
+        # check all symbols for this state
         for symbol in alphabet:
+
+            # if a transition is missing, send it to P
             if symbol not in transitions[state]:
                 transitions[state][symbol] = {sink_state}
                 missing_transition_found = True
-
+    
+    # if at least one transition was missing → we add the sink state
     if missing_transition_found:
+
+        # add P to the set of states
         automaton["states"].add(sink_state)
+        # create transitions for P 
         transitions[sink_state] = {}
+         # P loops to itself for every symbol
         for symbol in alphabet:
             transitions[sink_state][symbol] = {sink_state}
         print(f"Sink state '{sink_state}' added to complete the automaton.")
     else:
+        # nothing to do if already complete
         print("Automaton is already complete — no sink state needed.")
-
+    
+    # update transitions in the automaton
     automaton["transitions"] = transitions
+    # return the completed automaton
     return automaton
 
 
