@@ -18,85 +18,84 @@ Choose an option: 1
 
       |   a  |
 --------------
-  T 0  |      |
-  I 1  | 0,1  |
+  T 0  |  0   |
+  I 1  |  0   |
 
 -------------------------------------
 
 Choose an option: 2
-  Standard    : no
-  Deterministic: no
+Automaton is standrad.
+  Standard    : yes
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
   Complete    : yes
 
 -------------------------------------
 
 Choose an option: 3
 
-Automaton standardized: new initial state 'i0' created.
-
-      |   a  |
---------------
-  T 0  |      |
-    1  | 0,1  |
-  I i0 | 0,1  |
+Automaton is standrad.
+Automaton is already standard — skipping.
 
 -------------------------------------
 
 Choose an option: 4
 
-Automaton is non-deterministic → determinizing & completing.
-
---- DETERMINIZATION: state correspondence ---
-  New state 'i0' ← original states ['i0']
-  New state '0.1' ← original states ['0', '1']
-
-      |   a  |
---------------
-  T 0.1 | 0.1  |
-  I i0 | 0.1  |
+Automaton is deterministic.
+Automaton is complete
+Automaton is already a complete DFA — nothing to do.
 
 -------------------------------------
 
 Choose an option: 5
 
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
   Partition at step 0:
-    Group 0: ['i0']
-    Group 1: ['0.1']
+    Group 0: ['1']
+    Group 1: ['0']
   -------------------
   State   | →a      |
   -------------------
-  i0      | G1      |
+  1       | G1      |
   -------------------
-  0.1     | G1      |
+  0       | G1      |
   -------------------
 
   Partition at step 1:
-    Group 0: ['i0']
-    Group 1: ['0.1']
+    Group 0: ['1']
+    Group 1: ['0']
   -------------------
   State   | →a      |
   -------------------
-  i0      | G1      |
+  1       | G1      |
   -------------------
-  0.1     | G1      |
+  0       | G1      |
   -------------------
 
 The automaton is already minimal.
 
 --- MINIMIZATION: state correspondence ---
-  New state 0 ← ['i0']
-  New state 1 ← ['0.1']
+  New state 0 ← ['1']
+  New state 1 ← ['0']
 
       |   a  |
 --------------
   I 0  |  1   |
   T 1  |  1   |
 
-
 -------------------------------------
 
 Choose an option: 6
 
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
 Complement automaton built (final and non-final states swapped).
 
       |   a  |
@@ -112,8 +111,8 @@ Enter a word (or 'end' to stop): a
   'a' is accepted.
 Enter a word (or 'end' to stop): aa
   'aa' is accepted.
-Enter a word (or 'end' to stop): aba
-  'aba' is rejected.
+Enter a word (or 'end' to stop): bb
+  'bb' is rejected.
 
 -------------------------------------
 

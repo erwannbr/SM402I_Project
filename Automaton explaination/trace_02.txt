@@ -23,15 +23,18 @@ Choose an option: 1
 -------------------------------------
 
 Choose an option: 2
-
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
   Standard    : no
+Automaton is deterministic.
   Deterministic: yes
+Automaton is complete
   Complete    : yes
 
 -------------------------------------
 
 Choose an option: 3
 
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
 Automaton standardized: new initial state 'i0' created.
 
       |   a  |
@@ -39,10 +42,13 @@ Automaton standardized: new initial state 'i0' created.
   T 0  |  0   |
  IT i0 |  0   |
 
+
 -------------------------------------
 
 Choose an option: 4
 
+Automaton is deterministic.
+Automaton is complete
 Automaton is already a complete DFA — nothing to do.
 
 -------------------------------------

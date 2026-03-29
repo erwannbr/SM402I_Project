@@ -27,14 +27,19 @@ Choose an option: 1
 -------------------------------------
 
 Choose an option: 2
+Automaton is not standard, there is more than one initial state.
   Standard    : no
+Automaton is not deterministic because there is more than one initial state.
   Deterministic: no
+Automaton is complete
   Complete    : yes
 
 -------------------------------------
 
 Choose an option: 3
 
+Automaton is not standard, there is more than one initial state.
+Automaton is not standard, there is more than one initial state.
 Automaton standardized: new initial state 'i0' created.
 
       |   a  |   b  |
@@ -50,12 +55,13 @@ Automaton standardized: new initial state 'i0' created.
 
 Choose an option: 4
 
+Automaton is not deterministic since the state i0 with symbol 'b' has multiple targets {'4', '0'}.
 Automaton is non-deterministic → determinizing & completing.
 
 --- DETERMINIZATION: state correspondence ---
   New state 'i0' ← original states ['i0']
-  New state '0.2' ← original states ['0', '2']
   New state '0.4' ← original states ['0', '4']
+  New state '0.2' ← original states ['0', '2']
   New state '0' ← original states ['0']
 
       |   a  |   b  |

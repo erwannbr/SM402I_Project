@@ -24,20 +24,26 @@ Choose an option: 1
 -------------------------------------
 
 Choose an option: 2
+Automaton is standrad.
   Standard    : yes
+Automaton is deterministic.
   Deterministic: yes
+Automaton is complete
   Complete    : yes
 
 -------------------------------------
 
 Choose an option: 3
 
+Automaton is standrad.
 Automaton is already standard — skipping.
 
 -------------------------------------
 
 Choose an option: 4
 
+Automaton is deterministic.
+Automaton is complete
 Automaton is already a complete DFA — nothing to do.
 
 -------------------------------------
@@ -82,6 +88,8 @@ The automaton is already minimal.
 
 Choose an option: 6
 
+Automaton is deterministic.
+Automaton is not complete because state 0 has no transition
 Please obtain a complete deterministic FA first (option 4).
 
 -------------------------------------
