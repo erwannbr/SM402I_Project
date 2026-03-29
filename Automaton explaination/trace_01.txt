@@ -80,15 +80,22 @@ The automaton is already minimal.
 
 Choose an option: 6
 
-Automaton is complete
 Automaton is deterministic.
 Automaton is complete
+Automaton is deterministic.
 Automaton is complete
 Complement automaton built (final and non-final states swapped).
 
     |  a  |
 -----------
  I 0|  -- |
+Enter a word to test on the complement (or 'end' to stop):
+  '' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): e
+  'e' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): a
+  'a' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop):
 
 -------------------------------------
 
