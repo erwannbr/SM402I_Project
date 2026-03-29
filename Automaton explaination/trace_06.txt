@@ -131,8 +131,17 @@ Minimization complete: 5 → 4 states.
 Choose an option: 6
 
 Automaton is deterministic.
-Automaton is not complete because state 3 has no transition
-Please obtain a complete deterministic FA first (option 4).
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+      |  a |  b |
+-----------------
+   0  |  ∅ |  ∅ |
+IT 1.3|  2 |  0 |
+   2  |  ∅ |  ∅ |
+ T ∅  |  ∅ |  ∅ |
 
 -------------------------------------
 

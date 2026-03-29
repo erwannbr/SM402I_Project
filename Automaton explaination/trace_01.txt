@@ -16,9 +16,9 @@ Automaton Menu
 
 Choose an option: 1
 
-      |   a  |
---------------
- IT 0  |      |
+    |  a  |
+-----------
+IT 0|  -- |
 
 -------------------------------------
 
@@ -80,9 +80,15 @@ The automaton is already minimal.
 
 Choose an option: 6
 
+Automaton is complete
 Automaton is deterministic.
-Automaton is not complete because state 0 has no transition
-Please obtain a complete deterministic FA first (option 4).
+Automaton is complete
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a  |
+-----------
+ I 0|  -- |
 
 -------------------------------------
 

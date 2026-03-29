@@ -89,8 +89,15 @@ The automaton is already minimal.
 Choose an option: 6
 
 Automaton is deterministic.
-Automaton is not complete because state 1 has no transition
-Please obtain a complete deterministic FA first (option 4).
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a  |
+-----------
+IT 0|  1  |
+   1|  -- |
 
 -------------------------------------
 
