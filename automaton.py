@@ -1,31 +1,32 @@
-# Predicate functions:
-# is_deterministic HOUSS
-# is_complete HOUSS
-# is_standard HOUSS
-
 """
 Display the automaton as a table.
 """
 def display_automata(FA):
+    #build the header row: one column per symbol
     alphabet = sorted(list(FA['alphabet']))
-    header = "      |"
+    header = "      |" #for the header
+
+    #build the table
     for letter in alphabet:
         header += f" {letter:^5}|"
     print("\n" + header)
     print("-" * len(header))
 
-    for state in sorted(str(s) for s in FA['states']):
+    #build the table with the states 
+    for state in sorted(str(s) for s in FA['states']): #sort the states
         prefix = ""
+        #check if the state is initial or final
         if state in FA.get('initials', []):
             prefix += "I"
         if state in FA.get('finals', []):
             prefix += "T"
 
-        state_label = str(state)
-        line = f"{prefix:>3} {state_label:<2} |"
+        state_label = str(state) #convert the state to a string
+        line = f"{prefix:>3} {state_label:<2} |" #build the line
 
-        state_transitions = FA['transitions'].get(state, {})
+        state_transitions = FA['transitions'].get(state, {}) #get the transitions for the state
 
+        #build the line
         for letter in alphabet:
             destinations = state_transitions.get(letter, set())
 
