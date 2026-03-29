@@ -1,0 +1,249 @@
+C:\Users\anais\PycharmProjects\Finite_Automata_Project\.venv\Scripts\python.exe C:\Users\anais\PycharmProjects\SM402I_Project\main.py
+Which automaton do you want to read? 29
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 1
+
+      |   a  |
+--------------
+  T 0  |  4   |
+  I 1  | 2,4  |
+    2  |  3   |
+  T 3  |  2   |
+    4  | 3,5  |
+    5  |  0   |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 2
+Automaton is standrad.
+  Standard    : yes
+Automaton is not deterministic since the state 1 with symbol 'a' has multiple targets {'2', '4'}.
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 4
+Automaton is not deterministic since the state 1 with symbol 'a' has multiple targets {'2', '4'}.
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state '1' ← original states ['1']
+  New state '2.4' ← original states ['2', '4']
+  New state '3.5' ← original states ['3', '5']
+  New state '0.2' ← original states ['0', '2']
+  New state '3.4' ← original states ['3', '4']
+  New state '2.3.5' ← original states ['2', '3', '5']
+  New state '0.2.3' ← original states ['0', '2', '3']
+  New state '2.3.4' ← original states ['2', '3', '4']
+
+      |   a  |
+--------------
+  T 0.2 | 3.4  |
+  T 0.2.3 |2.3.4 |
+  I 1  | 2.4  |
+  T 2.3.4 |2.3.5 |
+  T 2.3.5 |0.2.3 |
+    2.4 | 3.5  |
+  T 3.4 |2.3.5 |
+  T 3.5 | 0.2  |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['1', '2.4']
+    Group 1: ['0.2', '0.2.3', '2.3.4', '2.3.5', '3.4', '3.5']
+  -------------------
+  State   | →a      |
+  -------------------
+  1       | G0      |
+  2.4     | G1      |
+  -------------------
+  0.2     | G1      |
+  0.2.3   | G1      |
+  2.3.4   | G1      |
+  2.3.5   | G1      |
+  3.4     | G1      |
+  3.5     | G1      |
+  -------------------
+
+  Partition at step 1:
+    Group 0: ['2.4']
+    Group 1: ['1']
+    Group 2: ['0.2', '0.2.3', '2.3.4', '2.3.5', '3.4', '3.5']
+  -------------------
+  State   | →a      |
+  -------------------
+  2.4     | G2      |
+  -------------------
+  1       | G0      |
+  -------------------
+  0.2     | G2      |
+  0.2.3   | G2      |
+  2.3.4   | G2      |
+  2.3.5   | G2      |
+  3.4     | G2      |
+  3.5     | G2      |
+  -------------------
+
+  Partition at step 2:
+    Group 0: ['2.4']
+    Group 1: ['1']
+    Group 2: ['0.2', '0.2.3', '2.3.4', '2.3.5', '3.4', '3.5']
+  -------------------
+  State   | →a      |
+  -------------------
+  2.4     | G2      |
+  -------------------
+  1       | G0      |
+  -------------------
+  0.2     | G2      |
+  0.2.3   | G2      |
+  2.3.4   | G2      |
+  2.3.5   | G2      |
+  3.4     | G2      |
+  3.5     | G2      |
+  -------------------
+
+Minimization complete: 8 → 3 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['2.4']
+  New state 1 ← ['1']
+  New state 2 ← ['0.2', '0.2.3', '2.3.4', '2.3.5', '3.4', '3.5']
+
+      |   a  |
+--------------
+    0  |  2   |
+  I 1  |  0   |
+  T 2  |  2   |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+      |   a  |
+--------------
+  T 0  |  2   |
+ IT 1  |  0   |
+    2  |  2   |
+Enter a word to test on the complement (or 'end' to stop): aab
+  'aab' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): baa
+  'baa' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): aa
+  'aa' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): a
+  'a' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+      |   a  |
+--------------
+  T 0  |  2   |
+ IT 1  |  0   |
+    2  |  2   |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): aaa
+  'aaa' is accepted.
+Enter a word (or 'end' to stop): end
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+===================================
+Choose an option: 0
+Goodbye.
+
+Process finished with exit code 0

@@ -350,6 +350,14 @@ def complement(automaton):
     #Only final states has to be changed/swapped.
     #States, transitions and initial state remain the same.
     print("Complement automaton built (final and non-final states swapped).")
+    display_automata(comp)
+    word = input("Enter a word to test on the complement (or 'end' to stop): ").strip()
+    while word != "end":
+        if recognize_word(comp, word):
+            print(f"  '{word}' is accepted by the complement.")
+        else:
+            print(f"  '{word}' is rejected by the complement.")
+        word = input("Enter a word to test on the complement (or 'end' to stop): ").strip()
     return comp
 
 
