@@ -1,5 +1,8 @@
 from automaton import *
 import copy
+from graphviz import Digraph
+import webbrowser
+from pathlib import Path
 
 """
 Converts a non-deterministic FA into a complete deterministic FA using the subset-construction algorithm.
@@ -348,3 +351,54 @@ def complement(automaton):
     #States, transitions and initial state remain the same.
     print("Complement automaton built (final and non-final states swapped).")
     return comp
+
+
+import tempfile
+import webbrowser
+from pathlib import Path
+
+
+import tempfile
+import webbrowser
+from pathlib import Path
+
+
+def open_graphviz_graph(automaton, filename="automaton_graph"):
+    """
+    Build a Graphviz visualization of the automaton
+    and open it in the browser.
+    """
+
+    dot = Digraph(format="png")
+    dot.attr(rankdir="LR")   # left to right
+    dot.attr("node", shape="circle")
+
+    # fake start node
+    dot.node("start", shape="none", label="")
+
+    # states
+    for state in automaton["states"]:
+        state_name = str(state)
+
+        if state in automaton["finals"]:
+            dot.node(state_name, shape="doublecircle")
+        else:
+            dot.node(state_name, shape="circle")
+
+    # initial arrows
+    for init in automaton["initials"]:
+        dot.edge("start", str(init))
+
+    # transitions
+    for src, trans in automaton["transitions"].items():
+        for symbol, destinations in trans.items():
+            for dest in destinations:
+                dot.edge(str(src), str(dest), label=str(symbol))
+
+    # render file
+    output_path = dot.render(filename=filename, cleanup=True)
+
+    # open generated image
+    webbrowser.open(Path(output_path).resolve().as_uri())
+
+    print(f"Graphviz graph opened: {output_path}")

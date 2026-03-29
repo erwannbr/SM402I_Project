@@ -1,6 +1,7 @@
 from file_parser import read_automaton
 from automaton import display_automata, recognize_word, read_word, is_standard, is_deterministic, is_complete
-from operation import standardization, determinize, completion, minimization, complement
+from operation import open_graphviz_graph, standardization, determinize, completion, minimization, complement
+
 
 # this is function for the menu to choose option from
 def menu():
@@ -15,6 +16,7 @@ def menu():
     print("6. Complement")
     print("7. Test a word")
     print("8. Load another automaton")
+    print("9. Open Graphviz graph")
     print("0. Exit")
     print("=" * 35)
     return input("Choose an option: ").strip()
@@ -106,6 +108,9 @@ def main():
                 current_fa = read_automaton()
             except Exception as e:
                 print(f"Error loading file: {e}")
+
+        elif choice == "9":
+            open_graphviz_graph(current_fa)
 
         else:
             print("Unknown option — please try again.")
