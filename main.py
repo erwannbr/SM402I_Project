@@ -2,6 +2,10 @@ from file_parser import read_automaton
 from automaton import display_automata, recognize_word, read_word, is_standard, is_deterministic, is_complete
 from operation import open_graphviz_graph, standardization, determinize, completion, minimization, complement
 
+"""
+You need to install graphviz: 'pip install graphviz'
+"""
+
 
 # this is function for the menu to choose option from
 def menu():
