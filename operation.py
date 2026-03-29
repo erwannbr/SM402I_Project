@@ -27,7 +27,7 @@ def _epsilon_closure(states, transitions):
 
     while to_visit:
         current = to_visit.pop()
-        # Follow every epsilon transition out of current
+        #follow every epsilon transition out of current
         for target in transitions.get(current, {}).get("e", set()):
             if target not in closure:
                 closure.add(target)
@@ -56,8 +56,8 @@ def determinize(automaton):
     # 'e' is not a real input symbol — it is only used internally for epsilon-closure
     real_alphabet = [s for s in alphabet if s != "e"]
 
-    # The initial group is the epsilon-closure of all original initial states.
-    # frozenset is used so groups can be stored as dict keys (must be hashable).
+    #the initial group is the epsilon-closure of all original initial states.
+    #frozenset is used so groups can be stored as dict keys (must be hashable).
     initial_group = _epsilon_closure(automaton["initials"], transitions)
 
     dfa_states = [initial_group]
@@ -69,37 +69,37 @@ def determinize(automaton):
         current_group = to_process.pop(0)
         dfa_transitions[current_group] = {}
 
-        # The group is final if any of its member states was final in the original FA
+        #the group is final if any of its member states was final in the original FA
         if any(s in final_states for s in current_group):
             if current_group not in dfa_final_states:
                 dfa_final_states.append(current_group)
 
         for symbol in real_alphabet:
-            # Collect all states directly reachable by reading `symbol` from any state in the group
+            #collect all states directly reachable by reading `symbol` from any state in the group
             raw_targets = set()
             for state in current_group:
                 if state in transitions and symbol in transitions[state]:
                     raw_targets.update(transitions[state][symbol])
 
-            # Then expand with epsilon-closure (states reachable via 'e' after reading symbol)
+            #then expand with epsilon-closure (states reachable via 'e' after reading symbol)
             next_group = _epsilon_closure(raw_targets, transitions) if raw_targets else frozenset()
 
             dfa_transitions[current_group][symbol] = next_group
 
-            # Only add the group to the queue if it hasn't been seen yet
+            #only add the group to the queue if it hasn't been seen yet
             if next_group not in dfa_states:
                 dfa_states.append(next_group)
                 to_process.append(next_group)
 
-    # Label each group of states as "1.2.3" (dot-separated sorted members).
-    # The empty group (no reachable state) is labelled "∅".
+    #Label each group of states as "1.2.3" (dot-separated sorted members).
+    #the empty group (no reachable state) is labelled "∅".
     def label(group):
         if not group:
             return "∅"
         return ".".join(sorted(str(s) for s in group))
 
-    # Rebuild the transition table with string keys,
-    # consistent with the rest of the program
+    #rebuild the transition table with string keys,
+    #consistent with the rest of the program
     str_transitions = {}
     for group, trans in dfa_transitions.items():
         str_transitions[label(group)] = {
