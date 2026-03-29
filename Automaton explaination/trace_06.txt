@@ -1,0 +1,151 @@
+Which automaton do you want to read? 6
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+      |   a  |   b  |
+---------------------
+  T 0  |      |      |
+  I 1  |  2   |      |
+  T 2  |      |      |
+  I 3  |      |  0   |
+  
+-------------------------------------
+
+Choose an option: 2
+Automaton is not standard, there is more than one initial state.
+  Standard    : no
+Automaton is not deterministic because there is more than one initial state.
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is not standard, there is more than one initial state.
+Automaton is not standard, there is more than one initial state.
+Automaton standardized: new initial state 'i0' created.
+
+      |   a  |   b  |
+---------------------
+  T 0  |      |      |
+    1  |  2   |      |
+  T 2  |      |      |
+    3  |      |  0   |
+  I i0 |  2   |  0   |
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is deterministic.
+Automaton is complete
+Automaton is already a complete DFA — nothing to do.
+
+-------------------------------------
+
+Choose an option: 5
+
+  Partition at step 0:
+    Group 0: ['1', '3', 'i0']
+    Group 1: ['0', '2']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  1       | G1      | --      |
+  3       | --      | G1      |
+  i0      | G1      | G1      |
+  -----------------------------
+  0       | --      | --      |
+  2       | --      | --      |
+  -----------------------------
+
+  Partition at step 1:
+    Group 0: ['i0']
+    Group 1: ['3']
+    Group 2: ['1']
+    Group 3: ['0', '2']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  i0      | G3      | G3      |
+  -----------------------------
+  3       | --      | G3      |
+  -----------------------------
+  1       | G3      | --      |
+  -----------------------------
+  0       | --      | --      |
+  2       | --      | --      |
+  -----------------------------
+
+  Partition at step 2:
+    Group 0: ['i0']
+    Group 1: ['3']
+    Group 2: ['1']
+    Group 3: ['0', '2']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  i0      | G3      | G3      |
+  -----------------------------
+  3       | --      | G3      |
+  -----------------------------
+  1       | G3      | --      |
+  -----------------------------
+  0       | --      | --      |
+  2       | --      | --      |
+  -----------------------------
+
+Minimization complete: 5 → 4 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['i0']
+  New state 1 ← ['3']
+  New state 2 ← ['1']
+  New state 3 ← ['0', '2']
+
+      |   a  |   b  |
+---------------------
+  I 0  |  3   |  3   |
+    1  |      |  3   |
+    2  |  3   |      |
+  T 3  |      |      |
+  
+-------------------------------------
+
+Choose an option: 6
+
+Automaton is deterministic.
+Automaton is not complete because state 3 has no transition
+Please obtain a complete deterministic FA first (option 4).
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is accepted.
+Enter a word (or 'end' to stop): aa
+  'aa' is rejected.
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.
+

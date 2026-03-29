@@ -1,0 +1,109 @@
+Which automaton do you want to read? 3
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+      |   a  |
+--------------
+  I 0  |  1   |
+  T 1  |      |
+
+-------------------------------------
+
+Choose an option: 2
+Automaton is standrad.
+  Standard    : yes
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is standrad.
+Automaton is already standard — skipping.
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is deterministic.
+Automaton is complete
+Automaton is already a complete DFA — nothing to do.
+
+-------------------------------------
+
+Choose an option: 5
+
+  Partition at step 0:
+    Group 0: ['0']
+    Group 1: ['1']
+  -------------------
+  State   | →a      |
+  -------------------
+  0       | G1      |
+  -------------------
+  1       | --      |
+  -------------------
+
+  Partition at step 1:
+    Group 0: ['0']
+    Group 1: ['1']
+  -------------------
+  State   | →a      |
+  -------------------
+  0       | G1      |
+  -------------------
+  1       | --      |
+  -------------------
+
+The automaton is already minimal.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['0']
+  New state 1 ← ['1']
+
+      |   a  |
+--------------
+  I 0  |  1   |
+  T 1  |      |
+
+
+-------------------------------------
+
+Choose an option: 6
+
+Automaton is deterministic.
+Automaton is not complete because state 1 has no transition
+Please obtain a complete deterministic FA first (option 4).
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is accepted.
+Enter a word (or 'end' to stop): aa
+  'aa' is rejected.
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.
+

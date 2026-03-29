@@ -1,0 +1,135 @@
+Which automaton do you want to read? 7
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+      |   a  |
+--------------
+  T 0  |      |
+  I 1  | 0,1  |
+
+-------------------------------------
+
+Choose an option: 2
+Automaton is not standard because transition from state 1 with symbol 'a' goes to the initial state 1.
+  Standard    : no
+Automaton is not deterministic since the state 1 with symbol 'a' has multiple targets {'0', '1'}.
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is not standard because transition from state 1 with symbol 'a' goes to the initial state 1.
+Automaton is not standard because transition from state 1 with symbol 'a' goes to the initial state 1.
+Automaton standardized: new initial state 'i0' created.
+
+      |   a  |
+--------------
+  T 0  |      |
+    1  | 0,1  |
+  I i0 | 0,1  |
+
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is not deterministic since the state 1 with symbol 'a' has multiple targets {'0', '1'}.
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state 'i0' ← original states ['i0']
+  New state '0.1' ← original states ['0', '1']
+
+      |   a  |
+--------------
+  T 0.1 | 0.1  |
+  I i0 | 0.1  |
+  
+-------------------------------------
+
+Choose an option: 5
+
+  Partition at step 0:
+    Group 0: ['i0']
+    Group 1: ['0.1']
+  -------------------
+  State   | →a      |
+  -------------------
+  i0      | G1      |
+  -------------------
+  0.1     | G1      |
+  -------------------
+
+  Partition at step 1:
+    Group 0: ['i0']
+    Group 1: ['0.1']
+  -------------------
+  State   | →a      |
+  -------------------
+  i0      | G1      |
+  -------------------
+  0.1     | G1      |
+  -------------------
+
+The automaton is already minimal.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['i0']
+  New state 1 ← ['0.1']
+
+      |   a  |
+--------------
+  I 0  |  1   |
+  T 1  |  1   |
+
+-------------------------------------
+
+Choose an option: 6
+
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+      |   a  |
+--------------
+ IT 0  |  1   |
+    1  |  1   |
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is accepted.
+Enter a word (or 'end' to stop): aa
+  'aa' is accepted.
+Enter a word (or 'end' to stop): bbb
+  'bbb' is rejected.
+Enter a word (or 'end' to stop): b
+  'b' is rejected.
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.
+

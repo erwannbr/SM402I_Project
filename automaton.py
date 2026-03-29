@@ -1,31 +1,32 @@
-# Predicate functions:
-# is_deterministic HOUSS
-# is_complete HOUSS
-# is_standard HOUSS
-
 """
 Display the automaton as a table.
 """
 def display_automata(FA):
+    #build the header row: one column per symbol
     alphabet = sorted(list(FA['alphabet']))
-    header = "      |"
+    header = "      |" #for the header
+
+    #build the table
     for letter in alphabet:
         header += f" {letter:^5}|"
     print("\n" + header)
     print("-" * len(header))
 
-    for state in sorted(str(s) for s in FA['states']):
+    #build the table with the states 
+    for state in sorted(str(s) for s in FA['states']): #sort the states
         prefix = ""
+        #check if the state is initial or final
         if state in FA.get('initials', []):
             prefix += "I"
         if state in FA.get('finals', []):
             prefix += "T"
 
-        state_label = str(state)
-        line = f"{prefix:>3} {state_label:<2} |"
+        state_label = str(state) #convert the state to a string
+        line = f"{prefix:>3} {state_label:<2} |" #build the line
 
-        state_transitions = FA['transitions'].get(state, {})
+        state_transitions = FA['transitions'].get(state, {}) #get the transitions for the state
 
+        #build the line
         for letter in alphabet:
             destinations = state_transitions.get(letter, set())
 
@@ -97,6 +98,7 @@ Check if the automaton is standard
 """
 def is_standard(FA):
     if len(FA["initials"]) != 1:
+        print("Automaton is not standard, there is more than one initial state.")
         return False
 
     initial = FA["initials"][0]
@@ -104,8 +106,9 @@ def is_standard(FA):
     for state, state_transitions in FA["transitions"].items():
         for symbol, targets in state_transitions.items():
             if initial in targets:
+                print(f"Automaton is not standard because transition from state {state} with symbol '{symbol}' goes to the initial state {initial}.")
                 return False
-
+    print("Automaton is standrad.")
     return True
 
 
@@ -119,8 +122,13 @@ def is_complete(FA):
     for state in states:
         for symbol in alphabet:
             if state not in FA["transitions"] or symbol not in FA["transitions"][state]:
+                print(f"Automaton is not complete because state {state} has no transition")
+                return False
+            if symbol not in FA["transitions"][state]:
+                print(f"Automaton is not complete, we have missing transition from state {state} with symbol '{symbol}'")
                 return False
 
+    print("Automaton is complete")
     return True
 
 
@@ -129,11 +137,14 @@ Check if the automaton is deterministic
 """
 def is_deterministic(FA):
     if len(FA["initials"]) != 1:
+        print("Automaton is not deterministic because there is more than one initial state.")
         return False
 
     for state, state_transitions in FA["transitions"].items():
         for symbol, targets in state_transitions.items():
             if len(targets) > 1:
+                print(f"Automaton is not deterministic since the state {state} with symbol '{symbol}' has multiple targets {targets}.")
                 return False
 
+    print("Automaton is deterministic.")
     return True

@@ -1,0 +1,161 @@
+Which automaton do you want to read? 5
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+      |   a  |   b  |
+---------------------
+    0  |  0   |  0   |
+  I 1  |  2   |  0   |
+  T 2  |      |      |
+  I 3  |  0   |  4   |
+  T 4  |      |      |
+
+-------------------------------------
+
+Choose an option: 2
+Automaton is not standard, there is more than one initial state.
+  Standard    : no
+Automaton is not deterministic because there is more than one initial state.
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is not standard, there is more than one initial state.
+Automaton is not standard, there is more than one initial state.
+Automaton standardized: new initial state 'i0' created.
+
+      |   a  |   b  |
+---------------------
+    0  |  0   |  0   |
+    1  |  2   |  0   |
+  T 2  |      |      |
+    3  |  0   |  4   |
+  T 4  |      |      |
+  I i0 | 0,2  | 0,4  |
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is not deterministic since the state i0 with symbol 'b' has multiple targets {'4', '0'}.
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state 'i0' ← original states ['i0']
+  New state '0.4' ← original states ['0', '4']
+  New state '0.2' ← original states ['0', '2']
+  New state '0' ← original states ['0']
+
+      |   a  |   b  |
+---------------------
+    0  |  0   |  0   |
+  T 0.2 |  0   |  0   |
+  T 0.4 |  0   |  0   |
+  I i0 | 0.2  | 0.4  |
+
+-------------------------------------
+
+Choose an option: 5
+
+  Partition at step 0:
+    Group 0: ['0', 'i0']
+    Group 1: ['0.2', '0.4']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  0       | G0      | G0      |
+  i0      | G1      | G1      |
+  -----------------------------
+  0.2     | G0      | G0      |
+  0.4     | G0      | G0      |
+  -----------------------------
+
+  Partition at step 1:
+    Group 0: ['i0']
+    Group 1: ['0']
+    Group 2: ['0.2', '0.4']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  i0      | G2      | G2      |
+  -----------------------------
+  0       | G1      | G1      |
+  -----------------------------
+  0.2     | G1      | G1      |
+  0.4     | G1      | G1      |
+  -----------------------------
+
+  Partition at step 2:
+    Group 0: ['i0']
+    Group 1: ['0']
+    Group 2: ['0.2', '0.4']
+  -----------------------------
+  State   | →a      | →b      |
+  -----------------------------
+  i0      | G2      | G2      |
+  -----------------------------
+  0       | G1      | G1      |
+  -----------------------------
+  0.2     | G1      | G1      |
+  0.4     | G1      | G1      |
+  -----------------------------
+
+Minimization complete: 4 → 3 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['i0']
+  New state 1 ← ['0']
+  New state 2 ← ['0.2', '0.4']
+
+      |   a  |   b  |
+---------------------
+  I 0  |  2   |  2   |
+    1  |  1   |  1   |
+  T 2  |  1   |  1   |
+-------------------------------------
+
+Choose an option: 6
+
+Complement automaton built (final and non-final states swapped).
+
+      |   a  |   b  |
+---------------------
+ IT 0  |  2   |  2   |
+  T 1  |  1   |  1   |
+    2  |  1   |  1   |
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is accepted.
+Enter a word (or 'end' to stop): aa
+  'aa' is rejected.
+Enter a word (or 'end' to stop): brbr
+  'brbr' is rejected.
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.
+

@@ -1,0 +1,110 @@
+Which automaton do you want to read? 2
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+      |   a  |
+--------------
+ IT 0  |  0   |
+
+-------------------------------------
+
+Choose an option: 2
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+  Standard    : no
+Automaton is deterministic.
+  Deterministic: yes
+Automaton is complete
+  Complete    : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+Automaton standardized: new initial state 'i0' created.
+
+      |   a  |
+--------------
+  T 0  |  0   |
+ IT i0 |  0   |
+
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is deterministic.
+Automaton is complete
+Automaton is already a complete DFA — nothing to do.
+
+-------------------------------------
+
+Choose an option: 5
+
+  Partition at step 0:
+    Group 0: ['0', 'i0']
+  -------------------
+  State   | →a      |
+  -------------------
+  0       | G0      |
+  i0      | G0      |
+  -------------------
+
+  Partition at step 1:
+    Group 0: ['0', 'i0']
+  -------------------
+  State   | →a      |
+  -------------------
+  0       | G0      |
+  i0      | G0      |
+  -------------------
+
+Minimization complete: 2 → 1 states.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['0', 'i0']
+
+      |   a  |
+--------------
+ IT 0  |  0   |
+
+
+-------------------------------------
+
+Choose an option: 6
+
+Complement automaton built (final and non-final states swapped).
+
+      |   a  |
+--------------
+  I 0  |  0   |
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): a
+  'a' is accepted.
+Enter a word (or 'end' to stop): b
+  'b' is rejected.
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.
+
