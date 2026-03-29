@@ -1,0 +1,103 @@
+Which automaton do you want to read? 9
+
+=====================================
+Automaton Menu
+=====================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+0. Exit
+=====================================
+
+Choose an option: 1
+
+    | a | b |
+----------------
+T 0 | 2 |   |
+IT1 | 2 |   |
+  2 | 3 | 3 |
+  3 | 4 |   |
+  4 | 5 | 5 |
+  5 | 0 |   |
+
+-------------------------------------
+
+Choose an option: 2
+
+Standard     : yes
+Deterministic: yes
+Complete     : yes
+
+-------------------------------------
+
+Choose an option: 3
+
+Automaton is already standard — skipping.
+
+-------------------------------------
+
+Choose an option: 4
+
+Automaton is already a complete DFA — nothing to do.
+
+-------------------------------------
+
+Choose an option: 5
+
+Partition at step 0:
+  Group 0: ['2', '3', '4', '5']
+  Group 1: ['0', '1']
+
+-------------------------------------
+
+Partition at step 1:
+  Group 0: ['2', '4']
+  Group 1: ['5']
+  Group 2: ['3']
+  Group 3: ['0', '1']
+
+-------------------------------------
+
+Partition at step 2:
+  Group 0: ['4']
+  Group 1: ['2']
+  Group 2: ['5']
+  Group 3: ['3']
+  Group 4: ['0', '1']
+
+-------------------------------------
+
+Partition at step 3:
+  Group 0: ['4']
+  Group 1: ['2']
+  Group 2: ['5']
+  Group 3: ['3']
+  Group 4: ['0', '1']
+
+Minimization complete: 6 -> 5 states.
+
+-------------------------------------
+
+Choose an option: 6
+
+Please obtain a complete deterministic FA first (option 4).
+
+-------------------------------------
+
+Choose an option: 7
+
+Enter a word (or 'end' to stop): aba
+'aba' is rejected.
+
+Enter a word (or 'end' to stop): end
+
+-------------------------------------
+
+Choose an option: 0
+
+Goodbye.

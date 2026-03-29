@@ -80,13 +80,6 @@ def main():
             else:
                 comp_fa = complement(current_fa)
                 display_automata(comp_fa)
-                word = read_word()
-                while word != "end":
-                    if recognize_word(comp_fa, word):
-                        print(f"  '{word}' is accepted by the complement.")
-                    else:
-                        print(f"  '{word}' is rejected by the complement.")
-                    word = read_word()
 
         elif choice == "7":
             word = read_word()
