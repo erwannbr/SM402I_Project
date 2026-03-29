@@ -11,49 +11,53 @@ Which automaton do you want to read? 14
 6. Complement
 7. Test a word
 8. Load another automaton
+9. Open Graphviz graph
 0. Exit
 ===================================
-
 Choose an option: 1
 
       |   a  |   b  |   c  |   d  |
 -----------------------------------
-  I 0 |  0   |  2   |  1   |  1   |
-  T 1 |      |      |      |  1   |
-    2 |      |  2   |  3   |  1   |
-    3 |      |      |  3   |  1   |
+  I 0  |  0   |  2   |  1   |  1   |
+  T 1  |      |      |      |  1   |
+    2  |      |  2   |  3   |  1   |
+    3  |      |      |  3   |  1   |
 
--------------------------------------
-
+===================================
 Choose an option: 2
-
-  Standard     : no
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+  Standard    : no
+Automaton is deterministic.
   Deterministic: yes
-  Complete     : yes
+Automaton is complete
+  Complete    : yes
 
--------------------------------------
-
+===================================
 Choose an option: 3
-
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
+Automaton is not standard because transition from state 0 with symbol 'a' goes to the initial state 0.
 Automaton standardized: new initial state 'i0' created.
 
       |   a  |   b  |   c  |   d  |
 -----------------------------------
-    0 |  0   |  2   |  1   |  1   |
-  T 1 |      |      |      |  1   |
-    2 |      |  2   |  3   |  1   |
-    3 |      |      |  3   |  1   |
-  I i0|  0   |  2   |  1   |  1   |
+    0  |  0   |  2   |  1   |  1   |
+  T 1  |      |      |      |  1   |
+    2  |      |  2   |  3   |  1   |
+    3  |      |      |  3   |  1   |
+  I i0 |  0   |  2   |  1   |  1   |
 
--------------------------------------
-
+===================================
 Choose an option: 4
-
+Automaton is deterministic.
+Automaton is complete
 Automaton is already a complete DFA — nothing to do.
 
--------------------------------------
-
+===================================
 Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
 
   Partition at step 0:
     Group 0: ['0', '2', '3', 'i0']
@@ -70,17 +74,17 @@ Choose an option: 5
   -------------------------------------------------
 
   Partition at step 1:
-    Group 0: ['2']
-    Group 1: ['0', 'i0']
+    Group 0: ['0', 'i0']
+    Group 1: ['2']
     Group 2: ['3']
     Group 3: ['1']
   -------------------------------------------------
   State   | →a      | →b      | →c      | →d      |
   -------------------------------------------------
-  2       | --      | G0      | G2      | G3      |
+  0       | G0      | G1      | G3      | G3      |
+  i0      | G0      | G1      | G3      | G3      |
   -------------------------------------------------
-  0       | G1      | G0      | G3      | G3      |
-  i0      | G1      | G0      | G3      | G3      |
+  2       | --      | G1      | G2      | G3      |
   -------------------------------------------------
   3       | --      | --      | G2      | G3      |
   -------------------------------------------------
@@ -88,17 +92,17 @@ Choose an option: 5
   -------------------------------------------------
 
   Partition at step 2:
-    Group 0: ['2']
-    Group 1: ['0', 'i0']
+    Group 0: ['0', 'i0']
+    Group 1: ['2']
     Group 2: ['3']
     Group 3: ['1']
   -------------------------------------------------
   State   | →a      | →b      | →c      | →d      |
   -------------------------------------------------
-  2       | --      | G0      | G2      | G3      |
+  0       | G0      | G1      | G3      | G3      |
+  i0      | G0      | G1      | G3      | G3      |
   -------------------------------------------------
-  0       | G1      | G0      | G3      | G3      |
-  i0      | G1      | G0      | G3      | G3      |
+  2       | --      | G1      | G2      | G3      |
   -------------------------------------------------
   3       | --      | --      | G2      | G3      |
   -------------------------------------------------
@@ -108,38 +112,75 @@ Choose an option: 5
 Minimization complete: 5 → 4 states.
 
 --- MINIMIZATION: state correspondence ---
-  New state 0 ← ['2']
-  New state 1 ← ['0', 'i0']
+  New state 0 ← ['0', 'i0']
+  New state 1 ← ['2']
   New state 2 ← ['3']
   New state 3 ← ['1']
 
       |   a  |   b  |   c  |   d  |
 -----------------------------------
-    0 |      |  0   |  2   |  3   |
-  I 1 |  1   |  0   |  3   |  3   |
-    2 |      |      |  2   |  3   |
-  T 3 |      |      |      |  3   |
+  I 0  |  0   |  1   |  3   |  3   |
+    1  |      |  1   |  2   |  3   |
+    2  |      |      |  2   |  3   |
+  T 3  |      |      |      |  3   |
 
--------------------------------------
+===================================
+Choose an option: 4
+Automaton is deterministic.
+Automaton is not complete because state 1 has no transition
+Automaton is deterministic but not complete → completing.
+Sink state 'P' added to complete the automaton.
 
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  I 0  |  0   |  1   |  3   |  3   |
+    1  |  P   |  1   |  2   |  3   |
+    2  |  P   |  P   |  2   |  3   |
+  T 3  |  P   |  P   |  P   |  3   |
+    P  |  P   |  P   |  P   |  P   |
+
+===================================
 Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
 
-Please obtain a complete deterministic FA first (option 4).
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  IT 0  |  0   |  1   |  3   |  3   |
+  T 1   |  P   |  1   |  2   |  3   |
+  T 2   |  P   |  P   |  2   |  3   |
+    3   |  P   |  P   |  P   |  3   |
+  T P   |  P   |  P   |  P   |  P   |
 
--------------------------------------
+Enter a word to test on the complement (or 'end' to stop): a
+'a' is accepted by the complement automaton.
 
+Enter a word to test on the complement (or 'end' to stop): d
+'d' is rejected by the complement automaton.
+
+Enter a word to test on the complement (or 'end' to stop): end
+
+      |   a  |   b  |   c  |   d  |
+-----------------------------------
+  IT 0  |  0   |  1   |  3   |  3   |
+  T 1   |  P   |  1   |  2   |  3   |
+  T 2   |  P   |  P   |  2   |  3   |
+    3   |  P   |  P   |  P   |  3   |
+  T P   |  P   |  P   |  P   |  P   |
+
+===================================
 Choose an option: 7
+Enter a word (or 'end' to stop): d
+'d' is accepted.
 
-Enter a word (or 'end' to stop): c
-'c' is accepted.
-
-Enter a word (or 'end' to stop): bb
-'bb' is rejected.
+Enter a word (or 'end' to stop): a
+'a' is rejected.
 
 Enter a word (or 'end' to stop): end
 
--------------------------------------
-
+===================================
 Choose an option: 0
-
 Goodbye.
