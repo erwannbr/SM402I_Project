@@ -35,7 +35,7 @@ Automaton is complete
 
 Choose an option: 3
 
-Automaton is standrad.
+Automaton is standard.
 Automaton is already standard — skipping.
 
 -------------------------------------
