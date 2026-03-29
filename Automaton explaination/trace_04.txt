@@ -116,6 +116,8 @@ Enter a word (or 'end' to stop): a
 Enter a word (or 'end' to stop): aa
   'aa' is rejected.
 
+Enter a word (or 'end' to stop): end
+
 -------------------------------------
 
 Choose an option: 0
