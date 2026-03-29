@@ -1,0 +1,303 @@
+Which automaton do you want to read? 35
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 1
+
+     |  a  |  b  |
+------------------
+ I 0 |  -- |  -- |
+   1 |  2  |  -- |
+ T 10|  -- |  -- |
+   2 |  -- |  3  |
+   3 |  -- |  -- |
+   4 |  -- |  -- |
+   5 |  6  |  -- |
+   6 |  -- |  7  |
+   7 |  -- |  -- |
+   8 |  9  |  -- |
+   9 |  -- |  -- |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 2
+Automaton is standrad.
+  Standard    : yes
+Automaton is not deterministic — multiple targets found:
+  State '4' on 'e' → ['5', '8']
+  State '0' on 'e' → ['1', '4']
+  State '7' on 'e' → ['5', '8']
+  Deterministic: no
+Automaton is complete
+  Complete    : yes
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 4
+Automaton is not deterministic — multiple targets found:
+  State '4' on 'e' → ['5', '8']
+  State '0' on 'e' → ['1', '4']
+  State '7' on 'e' → ['5', '8']
+Automaton is non-deterministic → determinizing & completing.
+
+--- DETERMINIZATION: state correspondence ---
+  New state '0.1.4.5.8' ← original states ['0', '1', '4', '5', '8']
+  New state '10.2.6.9' ← original states ['10', '2', '6', '9']
+  New state '∅' ← original states []
+  New state '10.3.5.7.8' ← original states ['10', '3', '5', '7', '8']
+  New state '10.6.9' ← original states ['10', '6', '9']
+  New state '5.7.8' ← original states ['5', '7', '8']
+
+             |     a     |      b      |
+----------------------------------------
+ I 0.1.4.5.8 |  10.2.6.9 |      ∅      |
+ T 10.2.6.9  |     ∅     |  10.3.5.7.8 |
+ T 10.3.5.7.8|   10.6.9  |      ∅      |
+ T 10.6.9    |     ∅     |    5.7.8    |
+   5.7.8     |   10.6.9  |      ∅      |
+   ∅         |     ∅     |      ∅      |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 5
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+
+  Partition at step 0:
+    Group 0: ['0.1.4.5.8', '5.7.8', '∅']
+    Group 1: ['10.2.6.9', '10.3.5.7.8', '10.6.9']
+  -------------------------
+  State       | →a  | →b  |
+  -------------------------
+  0.1.4.5.8   | G1  | G0  |
+  5.7.8       | G1  | G0  |
+  ∅           | G0  | G0  |
+  -------------------------
+  10.2.6.9    | G0  | G1  |
+  10.3.5.7.8  | G1  | G0  |
+  10.6.9      | G0  | G0  |
+  -------------------------
+
+  Partition at step 1:
+    Group 0: ['∅']
+    Group 1: ['0.1.4.5.8', '5.7.8']
+    Group 2: ['10.3.5.7.8']
+    Group 3: ['10.2.6.9']
+    Group 4: ['10.6.9']
+  -------------------------
+  State       | →a  | →b  |
+  -------------------------
+  ∅           | G0  | G0  |
+  -------------------------
+  0.1.4.5.8   | G3  | G0  |
+  5.7.8       | G4  | G0  |
+  -------------------------
+  10.3.5.7.8  | G4  | G0  |
+  -------------------------
+  10.2.6.9    | G0  | G2  |
+  -------------------------
+  10.6.9      | G0  | G1  |
+  -------------------------
+
+  Partition at step 2:
+    Group 0: ['∅']
+    Group 1: ['5.7.8']
+    Group 2: ['0.1.4.5.8']
+    Group 3: ['10.3.5.7.8']
+    Group 4: ['10.2.6.9']
+    Group 5: ['10.6.9']
+  -------------------------
+  State       | →a  | →b  |
+  -------------------------
+  ∅           | G0  | G0  |
+  -------------------------
+  5.7.8       | G5  | G0  |
+  -------------------------
+  0.1.4.5.8   | G4  | G0  |
+  -------------------------
+  10.3.5.7.8  | G5  | G0  |
+  -------------------------
+  10.2.6.9    | G0  | G3  |
+  -------------------------
+  10.6.9      | G0  | G1  |
+  -------------------------
+
+  Partition at step 3:
+    Group 0: ['∅']
+    Group 1: ['5.7.8']
+    Group 2: ['0.1.4.5.8']
+    Group 3: ['10.3.5.7.8']
+    Group 4: ['10.2.6.9']
+    Group 5: ['10.6.9']
+  -------------------------
+  State       | →a  | →b  |
+  -------------------------
+  ∅           | G0  | G0  |
+  -------------------------
+  5.7.8       | G5  | G0  |
+  -------------------------
+  0.1.4.5.8   | G4  | G0  |
+  -------------------------
+  10.3.5.7.8  | G5  | G0  |
+  -------------------------
+  10.2.6.9    | G0  | G3  |
+  -------------------------
+  10.6.9      | G0  | G1  |
+  -------------------------
+
+The automaton is already minimal.
+
+--- MINIMIZATION: state correspondence ---
+  New state 0 ← ['∅']
+  New state 1 ← ['5.7.8']
+  New state 2 ← ['0.1.4.5.8']
+  New state 3 ← ['10.3.5.7.8']
+  New state 4 ← ['10.2.6.9']
+  New state 5 ← ['10.6.9']
+
+    |  a |  b |
+---------------
+   0|  0 |  0 |
+   1|  5 |  0 |
+ I 2|  4 |  0 |
+ T 3|  5 |  0 |
+ T 4|  0 |  3 |
+ T 5|  0 |  1 |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 6
+Automaton is deterministic.
+Automaton is complete
+Automaton is deterministic.
+Automaton is complete
+Complement automaton built (final and non-final states swapped).
+
+    |  a |  b |
+---------------
+ T 0|  0 |  0 |
+ T 1|  5 |  0 |
+IT 2|  4 |  0 |
+   3|  5 |  0 |
+   4|  0 |  3 |
+   5|  0 |  1 |
+Enter a word to test on the complement (or 'end' to stop): ab
+  'ab' is rejected by the complement.
+Enter a word to test on the complement (or 'end' to stop): aaa
+  'aaa' is accepted by the complement.
+Enter a word to test on the complement (or 'end' to stop): end
+
+    |  a |  b |
+---------------
+ T 0|  0 |  0 |
+ T 1|  5 |  0 |
+IT 2|  4 |  0 |
+   3|  5 |  0 |
+   4|  0 |  3 |
+   5|  0 |  1 |
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 7
+Enter a word (or 'end' to stop): aaaaa
+  'aaaaa' is rejected.
+Enter a word (or 'end' to stop): bbbb
+  'bbbb' is rejected.
+Enter a word (or 'end' to stop): ab
+  'ab' is accepted.
+Enter a word (or 'end' to stop): ba
+  'ba' is rejected.
+Enter a word (or 'end' to stop): end
+
+===================================
+        Automaton Menu
+===================================
+1. Display automaton
+2. Check properties (std / det / complete)
+3. Standardize
+4. Determinize & complete
+5. Minimize
+6. Complement
+7. Test a word
+8. Load another automaton
+9. Open Graphviz graph
+0. Exit
+===================================
+Choose an option: 0
+Goodbye.
+
+Process finished with exit code 0
