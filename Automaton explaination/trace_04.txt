@@ -98,12 +98,14 @@ Complement automaton built (final and non-final states swapped).
 -----------
 IT 0|  1  |
  T 1|  -- |
-Enter a word to test on the complement (or 'end' to stop):
-  '' is accepted by the complement.
+
+Enter a word to test on the complement (or 'end' to stop): 
+'' is accepted by the complement automaton.
+
 Enter a word to test on the complement (or 'end' to stop): a
-  'a' is accepted by the complement.
-Enter a word to test on the complement (or 'end' to stop): b
-  'b' is rejected by the complement.
+'a' is rejected by the complement automaton.
+
+Enter a word to test on the complement (or 'end' to stop): end
 
 -------------------------------------
 
