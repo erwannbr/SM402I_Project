@@ -1,40 +1,57 @@
 """
 Display the automaton as a table.
 """
-def display_automata(FA):
-    #build the header row: one column per symbol
-    alphabet = sorted(list(FA['alphabet']))
-    header = "      |" #for the header
 
-    #build the table
+
+def display_automata(FA):
+    alphabet = sorted(list(FA['alphabet']))
+    states = sorted(list(FA['states']), key=lambda s: str(s))
+
+    #compute dynamic column widths
+
+    #width of the state column: longest state name + prefix ("→*" = 2 chars) + spacing
+    state_col_w = max((len(str(s)) for s in states), default=1) + 3  # +3 for prefix + space
+
+    #width of each transition column: wide enough for the longest destination string
+    #and at least as wide as the symbol itself.
+    def dest_str(state, letter):
+        dests = FA['transitions'].get(state, {}).get(letter, set())
+        if dests:
+            return ",".join(sorted((str(d) for d in dests), key=str))
+        return "--"
+
+    col_widths = {}
     for letter in alphabet:
-        header += f" {letter:^5}|"
+        max_dest = max((len(dest_str(s, letter)) for s in states), default=2)
+        col_widths[letter] = max(max_dest, len(letter)) + 2  # +2 for padding
+
+    #header
+    header = f"{'':^{state_col_w}}|"
+    for letter in alphabet:
+        header += f" {letter:^{col_widths[letter]}}|"
     print("\n" + header)
     print("-" * len(header))
 
-    #build the table with the states 
-    for state in sorted(str(s) for s in FA['states']): #sort the states
+    #rows
+    for state in states:
         prefix = ""
-        #check if the state is initial or final
         if state in FA.get('initials', []):
             prefix += "I"
-        if state in FA.get('finals', []):
+        if state in FA.get('finals', set()):
             prefix += "T"
 
-        state_label = str(state) #convert the state to a string
-        line = f"{prefix:>3} {state_label:<2} |" #build the line
+        #right-align prefix, then left-align state name within the state column
+        state_label = str(state)
+        line = f"{prefix:>2} {state_label:<{state_col_w - 3}}|"
 
-        state_transitions = FA['transitions'].get(state, {}) #get the transitions for the state
-
-        #build the line
         for letter in alphabet:
-            destinations = state_transitions.get(letter, set())
-
-            if destinations:
-                dest_str = ",".join(sorted(str(d) for d in destinations))
-                line += f"{dest_str:^6}|"
+            dests = FA['transitions'].get(state, {}).get(letter, set())
+            if dests:
+                cell = ",".join(sorted((str(d) for d in dests), key=str))
             else:
-                line += "      |"
+                cell = "--"
+            line += f" {cell:^{col_widths[letter]}}|"
+
         print(line)
 
 # ============================
@@ -135,16 +152,27 @@ def is_complete(FA):
 """
 Check if the automaton is deterministic
 """
+
+
 def is_deterministic(FA):
+    """An FA is deterministic if it has exactly one initial state and every
+    transition leads to at most one state"""
     if len(FA["initials"]) != 1:
-        print("Automaton is not deterministic because there is more than one initial state.")
+        print(f"Automaton is not deterministic: {len(FA['initials'])} initial states {FA['initials']}.")
         return False
 
+    #collect all non-deterministic transitions before reporting
+    conflicts = []
     for state, state_transitions in FA["transitions"].items():
         for symbol, targets in state_transitions.items():
             if len(targets) > 1:
-                print(f"Automaton is not deterministic since the state {state} with symbol '{symbol}' has multiple targets {targets}.")
-                return False
+                conflicts.append((state, symbol, targets))
+
+    if conflicts:
+        print("Automaton is not deterministic — multiple targets found:")
+        for state, symbol, targets in conflicts:
+            print(f"  State '{state}' on '{symbol}' → {sorted(str(t) for t in targets)}")
+        return False
 
     print("Automaton is deterministic.")
     return True

@@ -7,54 +7,99 @@ from pathlib import Path
 """
 Converts a non-deterministic FA into a complete deterministic FA using the subset-construction algorithm.
 """
-def determinize(automaton):
 
+
+# ---------------------------------------------------------------------------
+# DETERMINIZATION  (+ implicit completion via the sink state approach)
+# ---------------------------------------------------------------------------
+
+# ---------------------------------------------------------------------------
+# EPSILON-CLOSURE  (helper for determinize)
+# ---------------------------------------------------------------------------
+
+def _epsilon_closure(states, transitions):
+    """
+    Returns all states reachable from `states` via epsilon ('e') transitions only.
+    Iteratively expands the set until no new states are discovered.
+    """
+    closure = set(states)
+    to_visit = list(states)
+
+    while to_visit:
+        current = to_visit.pop()
+        # Follow every epsilon transition out of current
+        for target in transitions.get(current, {}).get("e", set()):
+            if target not in closure:
+                closure.add(target)
+                to_visit.append(target)
+
+    return frozenset(closure)
+
+
+# ---------------------------------------------------------------------------
+# DETERMINIZATION
+# ---------------------------------------------------------------------------
+
+def determinize(automaton):
+    """
+    Converts a non-deterministic FA (with or without epsilon transitions) into
+    an equivalent deterministic FA using the subset-construction algorithm.
+
+    Epsilon transitions (symbol 'e') are eliminated via epsilon-closure.
+    The result is deterministic but NOT necessarily complete — call completion()
+    separately if needed.
+    """
     alphabet = automaton["alphabet"]
     final_states = automaton["finals"]
     transitions = automaton["transitions"]
 
-    # BUG FIX: wrap the initial group in a frozenset so it is hashable
-    initial_group = frozenset(automaton["initials"])
+    # 'e' is not a real input symbol — it is only used internally for epsilon-closure
+    real_alphabet = [s for s in alphabet if s != "e"]
+
+    # The initial group is the epsilon-closure of all original initial states.
+    # frozenset is used so groups can be stored as dict keys (must be hashable).
+    initial_group = _epsilon_closure(automaton["initials"], transitions)
 
     dfa_states = [initial_group]
     dfa_final_states = []
     dfa_transitions = {}
-
     to_process = [initial_group]
 
     while to_process:
         current_group = to_process.pop(0)
-
         dfa_transitions[current_group] = {}
 
-        # Mark as final if any member state is a final state
+        # The group is final if any of its member states was final in the original FA
         if any(s in final_states for s in current_group):
             if current_group not in dfa_final_states:
                 dfa_final_states.append(current_group)
 
-        for symbol in alphabet:
-            next_group = set()
+        for symbol in real_alphabet:
+            # Collect all states directly reachable by reading `symbol` from any state in the group
+            raw_targets = set()
             for state in current_group:
-                # BUG FIX: guard against missing state/symbol in transitions
                 if state in transitions and symbol in transitions[state]:
-                    next_group.update(transitions[state][symbol])
+                    raw_targets.update(transitions[state][symbol])
 
-            next_group = frozenset(next_group)  # hashable
+            # Then expand with epsilon-closure (states reachable via 'e' after reading symbol)
+            next_group = _epsilon_closure(raw_targets, transitions) if raw_targets else frozenset()
 
             dfa_transitions[current_group][symbol] = next_group
 
+            # Only add the group to the queue if it hasn't been seen yet
             if next_group not in dfa_states:
                 dfa_states.append(next_group)
                 to_process.append(next_group)
 
-    # Build human-readable state labels: "{1.2.3}" style
+    # Label each group of states as "1.2.3" (dot-separated sorted members).
+    # The empty group (no reachable state) is labelled "∅".
     def label(group):
         if not group:
             return "∅"
         return ".".join(sorted(str(s) for s in group))
 
-    # Rebuild with string-keyed transitions for uniformity with the rest of
-    # the program
+    # Rebuild the transition table with string keys,
+    # consistent with the rest of the program
     str_transitions = {}
     for group, trans in dfa_transitions.items():
         str_transitions[label(group)] = {
@@ -70,12 +115,13 @@ def determinize(automaton):
         print(f"  New state '{label(g)}' ← original states {sorted(str(s) for s in g)}")
 
     return {
-        "alphabet": alphabet,
+        "alphabet": set(real_alphabet),  # 'e' removed from the output alphabet
         "states": str_states,
         "initials": str_initials,
         "finals": str_finals,
         "transitions": str_transitions
     }
+
 
 # ============================
 # COMPLETION FUNCTION
@@ -172,16 +218,29 @@ def standardization(FA):
 """
 Pretty-print one step of the minimization partition table.
 """
+
+
 def display_partition(partition, automaton, step):
+    """Displays the current partition and transition table at a given minimization step."""
     alphabet = sorted(list(automaton['alphabet']))
+    all_states = [s for group in partition for s in group]
+
+    # Print each group and its members
     print(f"\n  Partition at step {step}:")
     for i, group in enumerate(partition):
-         # Print each group and its members
         print(f"    Group {i}: {sorted(str(s) for s in group)}")
-    # Build the header row: one column per symbol, prefixed with an arrow
-    header = f"  {'State':<8}|"
+
+    # Dynamic column widths based on actual content
+    # State column: longest state name + 2 for indentation
+    state_col_w = max((len(str(s)) for s in all_states), default=5) + 2
+
+    # Transition columns: "G<n>" labels, so width depends on number of groups
+    max_group_label = len("G" + str(len(partition)))
+    col_w = max(max_group_label, 2) + 2  # +2 for padding
+
+    header = f"  {'State':<{state_col_w}}|"
     for letter in alphabet:
-        header += f" {'→'+letter:<8}|"
+        header += f" {'→' + letter:<{col_w}}|"
     print("  " + "-" * (len(header) - 2))
     print(header)
     print("  " + "-" * (len(header) - 2))
@@ -189,19 +248,21 @@ def display_partition(partition, automaton, step):
     for i, group in enumerate(partition):
         # sort by string so mixed int/string state names display consistently
         for state in sorted(group, key=str):
-            line = f"  {str(state):<8}|"
+            line = f"  {str(state):<{state_col_w}}|"
             for letter in alphabet:
                 dest_set = automaton['transitions'].get(state, {}).get(letter, set())
                 if dest_set:
-                    dest = next(iter(dest_set))
-                    # Find which group dest belongs to
+                    dest = next(iter(dest_set))  # DFA: one destination only
+                    # Show the group index of the destination, not the raw state name,
+                    # because at this stage we reason in terms of groups, not states.
                     dest_group = next(
                         (j for j, g in enumerate(partition) if dest in g), "?"
                     )
-                    line += f" {'G'+str(dest_group):<8}|"
+                    line += f" {'G' + str(dest_group):<{col_w}}|"
                 else:
-                    line += f" {'--':<8}|"
+                    line += f" {'--':<{col_w}}|"
             print(line)
+        # Separator line between groups for readability
         print("  " + "-" * (len(header) - 2))
 
 
