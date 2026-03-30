@@ -7,13 +7,13 @@ def display_automata(FA):
     alphabet = sorted(list(FA['alphabet']))
     states = sorted(list(FA['states']), key=lambda s: str(s))
 
-    #compute dynamic column widths
+    # compute dynamic column widths
 
-    #width of the state column: longest state name + prefix ("→*" = 2 chars) + spacing
+    # width of the state column: longest state name + prefix ("→*" = 2 chars) + spacing
     state_col_w = max((len(str(s)) for s in states), default=1) + 3  # +3 for prefix + space
 
-    #width of each transition column: wide enough for the longest destination string
-    #and at least as wide as the symbol itself.
+    # width of each transition column: wide enough for the longest destination string
+    # and at least as wide as the symbol itself.
     def dest_str(state, letter):
         dests = FA['transitions'].get(state, {}).get(letter, set())
         if dests:
@@ -25,14 +25,14 @@ def display_automata(FA):
         max_dest = max((len(dest_str(s, letter)) for s in states), default=2)
         col_widths[letter] = max(max_dest, len(letter)) + 2  # +2 for padding
 
-    #header
+    # header
     header = f"{'':^{state_col_w}}|"
     for letter in alphabet:
         header += f" {letter:^{col_widths[letter]}}|"
     print("\n" + header)
     print("-" * len(header))
 
-    #rows
+    # rows
     for state in states:
         prefix = ""
         if state in FA.get('initials', []):
@@ -40,7 +40,7 @@ def display_automata(FA):
         if state in FA.get('finals', set()):
             prefix += "T"
 
-        #right-align prefix, then left-align state name within the state column
+        # right-align prefix, then left-align state name within the state column
         state_label = str(state)
         line = f"{prefix:>2} {state_label:<{state_col_w - 3}}|"
 
@@ -54,6 +54,7 @@ def display_automata(FA):
 
         print(line)
 
+
 # ============================
 # WORD RECOGNITION
 # ============================
@@ -64,11 +65,11 @@ The function starts from the initial state/states, reads the word symbol by symb
 At the end, if at least one current state is a final state, the word is accepted. Otherwise, it is rejected.
 """
 
+
 def recognize_word(automaton, word):
-    
-    # start from the initial state 
+    # start from the initial state
     current_states = set(automaton["initials"])
-    
+
     # read the word one symbol at a time
     for symbol in word:
 
@@ -81,7 +82,7 @@ def recognize_word(automaton, word):
             if state in automaton["transitions"] and symbol in automaton["transitions"][state]:
                 # add all reachable states
                 next_states.update(automaton["transitions"][state][symbol])
-        
+
         # move to the next states
         current_states = next_states
 
@@ -89,9 +90,10 @@ def recognize_word(automaton, word):
     for state in current_states:
         if state in automaton["finals"]:
             return True
-    
+
     # if no final state is reached → word is rejected
     return False
+
 
 # ============================
 # READ WORD FROM USER
@@ -103,6 +105,7 @@ The user types a word in the terminal. The function returns the word.
 Typing "end" stops the program.
 """
 
+
 def read_word():
     # ask the user to type a word in the terminal
     word = input("Enter a word (or 'end' to stop): ")
@@ -113,6 +116,8 @@ def read_word():
 """
 Check if the automaton is standard
 """
+
+
 def is_standard(FA):
     # Check that there is exactly one initial state
     if len(FA["initials"]) != 1:
@@ -128,7 +133,8 @@ def is_standard(FA):
         for symbol, targets in state_transitions.items():
             # Check if any transition leads back to the initial state
             if initial in targets:
-                print(f"Automaton is not standard because transition from state {state} with symbol '{symbol}' goes to the initial state {initial}.")
+                print(
+                    f"Automaton is not standard because transition from state {state} with symbol '{symbol}' goes to the initial state {initial}.")
                 return False
 
     # If all checks pass, the automaton is standard
@@ -139,6 +145,8 @@ def is_standard(FA):
 """
 Check if the automaton is complete
 """
+
+
 def is_complete(FA):
     # Get alphabet and states of the automaton
     alphabet = FA["alphabet"]
@@ -148,18 +156,17 @@ def is_complete(FA):
     for state in states:
         # For each symbol in the alphabet
         for symbol in alphabet:
-            # Check if the state has any transitions defined
-            if state not in FA["transitions"] or symbol not in FA["transitions"][state]:
-                print(f"Automaton is not complete because state {state} has no transition")
-                return False
-            # Redundant check (already covered above) for missing symbol transition
-            if symbol not in FA["transitions"][state]:
-                print(f"Automaton is not complete, we have missing transition from state {state} with symbol '{symbol}'")
+            # Check if the state has a transition defined AND that the destination set is non-empty
+            dest = FA["transitions"].get(state, {}).get(symbol, set())
+            if not dest:
+                print(f"Automaton is not complete because state {state} has no transition on '{symbol}'")
                 return False
 
-    # If all transitions exist, the automaton is complete
+    # If all transitions exist and are non-empty, the automaton is complete
     print("Automaton is complete")
     return True
+
+
 """
 Check if the automaton is deterministic
 """
@@ -172,7 +179,7 @@ def is_deterministic(FA):
         print(f"Automaton is not deterministic: {len(FA['initials'])} initial states {FA['initials']}.")
         return False
 
-    #collect all non-deterministic transitions before reporting
+    # collect all non-deterministic transitions before reporting
     conflicts = []
     for state, state_transitions in FA["transitions"].items():
         for symbol, targets in state_transitions.items():
